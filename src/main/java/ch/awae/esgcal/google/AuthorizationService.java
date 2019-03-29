@@ -1,6 +1,5 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.service.LoginService;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
@@ -22,6 +21,7 @@ import java.util.Collections;
 class AuthorizationService {
 
     private final JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+    private final BrowserOpeningService browserOpeningService;
     private final HttpServer server;
     private final int port;
     private final long timeout;
@@ -32,10 +32,12 @@ class AuthorizationService {
 
     @Autowired
     public AuthorizationService(HttpServer server,
+                                BrowserOpeningService browserOpeningService,
                                 @Value("${google.login.port}") int port,
                                 @Value("${google.login.timeout}") long timeout,
                                 @Value("${google.login.enable}") boolean enable) {
         this.server = server;
+        this.browserOpeningService = browserOpeningService;
         this.port = port;
         this.timeout = timeout;
         this.enable = enable;
@@ -67,21 +69,7 @@ class AuthorizationService {
                 Collections.singleton(CalendarScopes.CALENDAR))
                 .build();
         val authURL = flow.newAuthorizationUrl().setRedirectUri("http://127.0.0.1:" + port);
-        //Desktop.getDesktop().browse(authURL.toURI());
-        // Do a best guess on unix until we get a platform independent way
-        // Build a list of browsers to try, in this order.
-        String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
-                "netscape","opera","links","lynx"};
-
-        // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
-        StringBuilder cmd = new StringBuilder();
-        for (int i=0; i<browsers.length; i++)
-            cmd.append(i == 0 ? "" : " || ").append(browsers[i]).append(" \"").append(authURL).append("\" ");
-
-        Runtime rt = Runtime.getRuntime();
-
-        rt.exec(new String[] { "sh", "-c", cmd.toString() });
-
+        browserOpeningService.openBrowser(authURL.toString());
         return flow;
     }
 

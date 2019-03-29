@@ -1,5 +1,6 @@
 version: 2.0.0-SNAPSHOT
 
+# Spring Boot Configuration
 spring:
   main:
     web-application-type: none
@@ -13,7 +14,7 @@ google:
   login:
     timeout: 120
     port: 8080
-    enable: false
+    enable: true
   api:
     throttle: 5
 

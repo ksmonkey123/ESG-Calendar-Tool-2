@@ -2,7 +2,6 @@ package ch.awae.esgcal.fx.export;
 
 import ch.awae.esgcal.FxController;
 import ch.awae.esgcal.model.DateExport;
-import ch.awae.esgcal.service.DateService;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -21,7 +20,6 @@ public class ExportByDateController implements FxController {
     private DateExport exportType;
 
     private final ExportRootController exportRootController;
-    private final DateService dateService;
 
     @Override
     public void initialize() {

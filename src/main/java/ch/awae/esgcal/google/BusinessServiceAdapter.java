@@ -2,8 +2,8 @@ package ch.awae.esgcal.google;
 
 import ch.awae.esgcal.model.Calendar;
 import ch.awae.esgcal.model.Event;
-import ch.awae.esgcal.service.CalendarService;
-import ch.awae.esgcal.service.EventService;
+import ch.awae.esgcal.service.datasource.CalendarService;
+import ch.awae.esgcal.service.datasource.EventService;
 import ch.awae.utils.functional.T2;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.service.LoginService;
+import ch.awae.esgcal.service.datasource.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

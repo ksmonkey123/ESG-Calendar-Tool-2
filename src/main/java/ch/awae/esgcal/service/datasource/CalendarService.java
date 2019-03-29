@@ -1,4 +1,4 @@
-package ch.awae.esgcal.service;
+package ch.awae.esgcal.service.datasource;
 
 import ch.awae.esgcal.model.Calendar;
 import ch.awae.utils.functional.T2;

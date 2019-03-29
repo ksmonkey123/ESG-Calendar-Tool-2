@@ -5,4 +5,6 @@ public interface FxController {
     default void initialize() {
     }
 
+
+
 }

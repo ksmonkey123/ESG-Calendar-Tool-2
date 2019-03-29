@@ -3,17 +3,15 @@ package ch.awae.esgcal.fx.publish;
 import ch.awae.esgcal.FxController;
 import ch.awae.esgcal.fx.modal.ErrorReportService;
 import ch.awae.esgcal.model.Calendar;
-import ch.awae.esgcal.service.CalendarService;
+import ch.awae.esgcal.service.datasource.CalendarService;
 import ch.awae.utils.functional.T2;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.util.StringConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +64,9 @@ public class PublishingCalendarSelectionController implements FxController {
     public void onNext() {
         List<T2<Calendar, Calendar>> selected = new ArrayList<>();
 
-        for (ListEntry entry : calendarPairs) {
-            if (entry.selection.get()) {
+        for (ListEntry entry : calendarPairs)
+            if (entry.selection.get())
                 selected.add(T2.of(entry.from, entry.to));
-            }
-        }
 
         try {
             publishingEventSelectionController.fetch(selected, startDate, endDate);
