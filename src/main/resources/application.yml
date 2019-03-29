@@ -1,0 +1,29 @@
+version: 2.0.0-SNAPSHOT
+
+spring:
+  main:
+    web-application-type: none
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+# Login Agent
+login:
+  timeout: 120
+  port: 8080
+  enable: false
+
+# Calendar Agent
+calendar:
+  api:
+    throttle: 5
+
+# Export Configuration
+export:
+  source:
+    jahresplan:
+      esg: "JP.xlsm"
+      be: "%new"
+      zh: "%new"
+      fullday: "%new"

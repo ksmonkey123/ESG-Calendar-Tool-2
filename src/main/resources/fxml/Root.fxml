@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ch.awae.esgcal.fx.RootController">
+
+    <stylesheets>
+        <URL value="@../css/Root.css"/>
+    </stylesheets>
+
+    <center>
+        <TabPane fx:id="tabs">
+            <padding>
+                <Insets top="-10"/>
+            </padding>
+            <Tab closable="false">
+                <fx:include source="Login.fxml"/>
+            </Tab>
+            <Tab closable="false" fx:id="menuTab">
+                <fx:include source="Menu.fxml"/>
+            </Tab>
+            <Tab closable="false" fx:id="exportTab">
+                <fx:include source="export/ExportRoot.fxml"/>
+            </Tab>
+        </TabPane>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,16 @@
+.root {
+	-fx-font-size: 20px;
+	-fx-font-family: Arial;
+}
+
+.toolbar {
+	-fx-background-color: grey;
+}
+
+.tab-pane {
+	-fx-tab-max-height: 0;
+}
+
+.tab-pane .tab-header-area {
+	visibility: hidden;
+}

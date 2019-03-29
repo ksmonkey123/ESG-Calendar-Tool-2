@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<TabPane xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         fx:controller="ch.awae.esgcal.fx.export.ExportRootController"
+         fx:id="tabs">
+
+    <padding>
+        <Insets top="-10"/>
+    </padding>
+    <Tab closable="false" fx:id="menuTab">
+        <BorderPane>
+            <center>
+                <VBox spacing="50" alignment="CENTER">
+                    <Button onAction="#onJahresplanESG">Jahresplan ESG</Button>
+                    <Button onAction="#onJahresplanBern">Jahresplan Bern</Button>
+                    <Button onAction="#onJahresplanZuerich">Jahresplan Zürich</Button>
+                    <Button onAction="#onPropenplanBern">Probenplan Bern</Button>
+                    <Button onAction="#onProbenplanZuerich">Probenplan Zürich</Button>
+                    <Button onAction="#onGantaetgigeTermine">Ganztägige Termine</Button>
+                </VBox>
+            </center>
+        </BorderPane>
+    </Tab>
+    <Tab closable="false" fx:id="yearTab">
+        <fx:include source="ExportByYear.fxml"/>
+    </Tab>
+</TabPane>

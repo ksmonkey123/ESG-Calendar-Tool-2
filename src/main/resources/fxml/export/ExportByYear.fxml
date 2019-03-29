@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ch.awae.esgcal.fx.export.ExportByYearController">
+
+    <center>
+        <VBox spacing="50" alignment="CENTER">
+            <ComboBox fx:id="year"/>
+            <HBox spacing="20" alignment="CENTER">
+                <Label fx:id="saveLocationLabel">Speichern unter: (bitte wählen)</Label>
+                <Button onAction="#onChooseLocation">...</Button>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>
