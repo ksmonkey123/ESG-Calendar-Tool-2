@@ -35,7 +35,7 @@ public class Main extends Application {
         stage.setScene(new Scene(rootNode));
         stage.show();
         String version = springContext.getEnvironment().getProperty("version");
-        stage.setTitle("ESG TOOL " + version);
+        stage.setTitle("ESG Tool " + version);
         System.gc();
     }
 
