@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ch.awae.esgcal.fx.publish.PublishingRootController">
+
+    <padding>
+        <Insets top="20" />
+    </padding>
+
+    <top>
+        <HBox alignment="CENTER">
+            <Label fx:id="title" />
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane styleClass="faketab" fx:id="tabs">
+            <padding>
+                <Insets top="-10"/>
+            </padding>
+
+            <Tab closable="false" fx:id="dateSelection">
+                <fx:include source="PublishingDateSelection.fxml"/>
+            </Tab>
+            <Tab closable="false" fx:id="calendarSelection">
+                <fx:include source="PublishCalendarSelection.fxml"/>
+            </Tab>
+            <Tab closable="false" fx:id="eventSelection">
+                <fx:include source="PublishEventSelection.fxml"/>
+            </Tab>
+        </TabPane>
+    </center>
+
+</BorderPane>

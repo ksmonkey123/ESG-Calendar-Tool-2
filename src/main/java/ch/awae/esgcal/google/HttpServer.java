@@ -1,4 +1,4 @@
-package ch.awae.esgcal.service;
+package ch.awae.esgcal.google;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 @Service
-public class HttpServer {
+class HttpServer {
 
     private final Object LOCK = new Object();
 
@@ -21,7 +21,7 @@ public class HttpServer {
      * this local server can receive the authentication code. In any case the local
      * server will be shut down after receiving a GET request.
      */
-    public String getCode(int port, long timeout) throws IOException, InterruptedException {
+    String getCode(int port, long timeout) throws IOException, InterruptedException {
         val server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(port), 0);
         MyHandler handler = new MyHandler(LOCK);
         synchronized (LOCK) {

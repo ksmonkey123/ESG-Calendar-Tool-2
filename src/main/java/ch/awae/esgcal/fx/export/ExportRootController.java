@@ -31,8 +31,7 @@ public class ExportRootController extends FxController {
     public void onGantaetgigeTermine() {
     }
 
-    public void showMenu() {
+    public void reset() {
         tabs.getSelectionModel().select(menuTab);
     }
-
 }

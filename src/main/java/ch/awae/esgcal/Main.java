@@ -1,6 +1,5 @@
 package ch.awae.esgcal;
 
-import com.google.api.client.json.jackson2.JacksonFactory;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +8,6 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -36,12 +34,6 @@ public class Main extends Application {
         String version = springContext.getEnvironment().getProperty("version");
         stage.setTitle("ESG TOOL " + version);
         System.gc();
-    }
-
-    @Bean
-    @SuppressWarnings("unused")
-    public JacksonFactory getJacksonFactory() {
-        return JacksonFactory.getDefaultInstance();
     }
 
 }

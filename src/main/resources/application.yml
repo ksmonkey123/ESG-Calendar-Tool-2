@@ -12,7 +12,7 @@ spring:
 login:
   timeout: 120
   port: 8080
-  enable: false
+  enable: true
 
 # Calendar Agent
 calendar:

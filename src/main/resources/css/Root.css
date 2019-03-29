@@ -7,10 +7,12 @@
 	-fx-background-color: grey;
 }
 
-.tab-pane {
+.faketab {
 	-fx-tab-max-height: 0;
 }
 
-.tab-pane .tab-header-area {
+.faketab .tab-header-area {
 	visibility: hidden;
 }
+
+.list-view, .split-pane { -fx-background-insets: 0; -fx-padding: 0; }

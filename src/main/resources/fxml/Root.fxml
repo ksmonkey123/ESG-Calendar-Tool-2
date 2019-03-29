@@ -13,7 +13,7 @@
     </stylesheets>
 
     <center>
-        <TabPane fx:id="tabs">
+        <TabPane styleClass="faketab" fx:id="tabs">
             <padding>
                 <Insets top="-10"/>
             </padding>
@@ -25,6 +25,9 @@
             </Tab>
             <Tab closable="false" fx:id="exportTab">
                 <fx:include source="export/ExportRoot.fxml"/>
+            </Tab>
+            <Tab closable="false" fx:id="publishingTab">
+                <fx:include source="publish/PublishingRoot.fxml"/>
             </Tab>
         </TabPane>
     </center>

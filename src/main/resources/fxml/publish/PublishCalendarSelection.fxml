@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ch.awae.esgcal.fx.publish.PublishingCalendarSelectionController">
+
+    <padding>
+        <Insets top="20" right="20" left="20" bottom="20" />
+    </padding>
+
+    <center>
+        <ListView fx:id="calendarList"/>
+    </center>
+
+    <bottom>
+        <BorderPane>
+            <left>
+                <Button onAction="#onBack">Zurück</Button>
+            </left>
+            <right>
+                <Button onAction="#onNext">Weiter</Button>
+            </right>
+        </BorderPane>
+    </bottom>
+
+</BorderPane>

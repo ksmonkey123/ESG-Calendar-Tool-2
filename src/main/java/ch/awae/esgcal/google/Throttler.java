@@ -1,4 +1,4 @@
-package ch.awae.esgcal.service.google;
+package ch.awae.esgcal.google;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -11,12 +11,17 @@ public class RootController extends FxController {
     public TabPane tabs;
     public Tab menuTab;
     public Tab exportTab;
+    public Tab publishingTab;
 
-    void showMenu() {
+    public void showMenu() {
         tabs.getSelectionModel().select(menuTab);
     }
 
     void showExport() {
         tabs.getSelectionModel().select(exportTab);
+    }
+
+    void showPublishing() {
+        tabs.getSelectionModel().select(publishingTab);
     }
 }

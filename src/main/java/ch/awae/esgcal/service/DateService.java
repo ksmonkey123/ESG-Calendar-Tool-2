@@ -20,4 +20,8 @@ public class DateService {
         return years;
 
     }
+
+    public LocalDate getBeginningOfYear() {
+        return LocalDate.now().withDayOfYear(1);
+    }
 }
