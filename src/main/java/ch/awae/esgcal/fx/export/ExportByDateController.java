@@ -33,7 +33,9 @@ public class ExportByDateController extends FxController {
     }
 
     private void dateChanged() {
-        executeButton.setDisable(dateFrom.getValue() == null || dateTo.getValue() == null);
+        executeButton.setDisable(dateFrom.getValue() == null
+                || dateTo.getValue() == null
+                || dateFrom.getValue().isAfter(dateTo.getValue()));
     }
 
     public void onBack() {

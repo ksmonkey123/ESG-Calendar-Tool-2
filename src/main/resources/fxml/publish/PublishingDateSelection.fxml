@@ -27,7 +27,7 @@
                 <Button onAction="#onBack">Zurück</Button>
             </left>
             <right>
-                <Button onAction="#onNext">Weiter</Button>
+                <Button onAction="#onNext" fx:id="nextButton">Weiter</Button>
             </right>
         </BorderPane>
     </bottom>

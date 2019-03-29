@@ -3,6 +3,7 @@ package ch.awae.esgcal.fx.publish;
 import ch.awae.esgcal.FxController;
 import ch.awae.esgcal.fx.RootController;
 import ch.awae.esgcal.service.DateService;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ public class PublishingDateSelectionController extends FxController {
 
     public DatePicker dateFrom;
     public DatePicker dateTo;
+    public Button nextButton;
 
     private final DateService dateService;
     private final RootController rootController;
@@ -25,6 +27,15 @@ public class PublishingDateSelectionController extends FxController {
         dateTo.setShowWeekNumbers(true);
         dateFrom.setValue(dateService.getBeginningOfYear());
         dateTo.setValue(dateService.getBeginningOfYear().plusYears(1).minusDays(1));
+        dateFrom.valueProperty().addListener((a, b, c) -> dateChanged());
+        dateTo.valueProperty().addListener((a, b, c) -> dateChanged());
+        dateChanged();
+    }
+
+    private void dateChanged() {
+        nextButton.setDisable(dateFrom.getValue() == null
+                || dateTo.getValue() == null
+                || dateFrom.getValue().isAfter(dateTo.getValue()));
     }
 
     public void onBack() {
