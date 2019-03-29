@@ -2,6 +2,7 @@ package ch.awae.esgcal.fx.publish;
 
 import ch.awae.esgcal.FxController;
 import ch.awae.esgcal.fx.RootController;
+import ch.awae.esgcal.fx.modal.ErrorReportService;
 import ch.awae.esgcal.model.Calendar;
 import ch.awae.esgcal.model.Event;
 import ch.awae.esgcal.service.EventService;
@@ -16,6 +17,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.cell.CheckBoxListCell;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -26,8 +28,10 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class PublishingEventSelectionController extends FxController {
+public class PublishingEventSelectionController implements FxController {
 
+    @Getter
+    private final ErrorReportService errorReportService;
     private final PublishingRootController publishingRootController;
     private final RootController rootController;
     private final EventService eventService;
@@ -81,16 +85,21 @@ public class PublishingEventSelectionController extends FxController {
 
     }
 
-    public void onExecute() throws Exception {
-        for (T2<T2<Calendar, Calendar>, List<ListEntry>> calendar : listEntries) {
-            List<Event> events = new ArrayList<>();
-            for (ListEntry entry : calendar._2) {
-                if (entry.getSelection().get())
-                    events.add(entry.getEvent());
+    public void onExecute() {
+        try {
+            for (T2<T2<Calendar, Calendar>, List<ListEntry>> calendar : listEntries) {
+                List<Event> events = new ArrayList<>();
+                for (ListEntry entry : calendar._2) {
+                    if (entry.getSelection().get()) {
+                        events.add(entry.getEvent());
+                    }
+                }
+                eventService.moveEvents(events, calendar._1._1, calendar._1._2);
             }
-            eventService.moveEvents(events, calendar._1._1, calendar._1._2);
+            rootController.showMenu();
+        } catch (Exception e) {
+            errorReportService.report(e);
         }
-        rootController.showMenu();
     }
 
     public void onBack() {

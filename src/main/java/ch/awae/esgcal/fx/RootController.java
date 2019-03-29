@@ -6,7 +6,7 @@ import javafx.scene.control.TabPane;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class RootController extends FxController {
+public class RootController implements FxController {
 
     public TabPane tabs;
     public Tab menuTab;

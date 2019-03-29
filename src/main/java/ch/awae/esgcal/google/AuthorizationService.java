@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 @Service
-public class AuthenticationService implements LoginService {
+class AuthorizationService {
 
     private final JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
     private final HttpServer server;
@@ -31,17 +31,17 @@ public class AuthenticationService implements LoginService {
     private Credential credentials = null;
 
     @Autowired
-    public AuthenticationService(HttpServer server,
-                                 @Value("${login.port}") int port,
-                                 @Value("${login.timeout}") long timeout,
-                                 @Value("${login.enable}") boolean enable) {
+    public AuthorizationService(HttpServer server,
+                                @Value("${google.login.port}") int port,
+                                @Value("${google.login.timeout}") long timeout,
+                                @Value("${google.login.enable}") boolean enable) {
         this.server = server;
         this.port = port;
         this.timeout = timeout;
         this.enable = enable;
     }
 
-    public void login() throws GeneralSecurityException, IOException, InterruptedException {
+    void authorize() throws GeneralSecurityException, IOException, InterruptedException {
         if (!enable) {
             System.out.println("authentication service disabled. google api will not work");
             return;
@@ -83,5 +83,11 @@ public class AuthenticationService implements LoginService {
         rt.exec(new String[] { "sh", "-c", cmd.toString() });
 
         return flow;
+    }
+
+    void verifyAuthenticated() {
+        if (credentials == null) {
+            throw new IllegalStateException("Google Calendar API not authorized!");
+        }
     }
 }

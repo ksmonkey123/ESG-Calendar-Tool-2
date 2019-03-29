@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class MenuController extends FxController {
+public class MenuController implements FxController {
 
     private final ApplicationContext context;
     private final RootController rootController;

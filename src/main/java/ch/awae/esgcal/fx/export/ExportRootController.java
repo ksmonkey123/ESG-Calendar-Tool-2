@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class ExportRootController extends FxController {
+public class ExportRootController implements FxController {
 
     public TabPane tabs;
     public Tab menuTab;

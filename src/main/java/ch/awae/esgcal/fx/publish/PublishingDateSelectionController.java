@@ -2,6 +2,7 @@ package ch.awae.esgcal.fx.publish;
 
 import ch.awae.esgcal.FxController;
 import ch.awae.esgcal.fx.RootController;
+import ch.awae.esgcal.fx.modal.ErrorReportService;
 import ch.awae.esgcal.service.DateService;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class PublishingDateSelectionController extends FxController {
+public class PublishingDateSelectionController implements FxController {
 
     public DatePicker dateFrom;
     public DatePicker dateTo;
@@ -20,6 +21,7 @@ public class PublishingDateSelectionController extends FxController {
     private final RootController rootController;
     private final PublishingRootController publishingRootController;
     private final PublishingCalendarSelectionController calendarSelectionController;
+    private final ErrorReportService errorReportService;
 
     @Override
     public void initialize() {
@@ -42,9 +44,13 @@ public class PublishingDateSelectionController extends FxController {
         rootController.showMenu();
     }
 
-    public void onNext() throws Exception {
-        calendarSelectionController.fetch(dateFrom.getValue(), dateTo.getValue());
-        publishingRootController.showCalendarSelection();
+    public void onNext() {
+        try {
+            calendarSelectionController.fetch(dateFrom.getValue(), dateTo.getValue());
+            publishingRootController.showCalendarSelection();
+        } catch (Exception e) {
+            errorReportService.report(e);
+        }
     }
 
 }

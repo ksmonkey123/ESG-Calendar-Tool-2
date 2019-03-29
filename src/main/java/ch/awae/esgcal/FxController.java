@@ -1,8 +1,8 @@
 package ch.awae.esgcal;
 
-public class FxController {
+public interface FxController {
 
-    public void initialize() {
+    default void initialize() {
     }
 
 }

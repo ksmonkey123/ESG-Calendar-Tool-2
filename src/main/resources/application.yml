@@ -8,14 +8,12 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 
-# Login Agent
-login:
-  timeout: 120
-  port: 8080
-  enable: false
-
-# Calendar Agent
-calendar:
+# Google API Configuration
+google:
+  login:
+    timeout: 120
+    port: 8080
+    enable: false
   api:
     throttle: 5
 

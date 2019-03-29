@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class PublishingRootController extends FxController {
+public class PublishingRootController implements FxController {
 
     public Label title;
     public TabPane tabs;

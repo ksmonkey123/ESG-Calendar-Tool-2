@@ -2,6 +2,7 @@ package ch.awae.esgcal.google;
 
 import ch.awae.esgcal.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.val;
@@ -12,10 +13,10 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class GoogleEvent implements Event {
 
-    @Getter
+    @Getter(AccessLevel.PACKAGE)
     private final com.google.api.services.calendar.model.Event backer;
 
     @Override

@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Component
-public class Throttler {
+class Throttler {
 
     private final ReentrantLock lock = new ReentrantLock(true);
     // milliseconds between calls
@@ -17,7 +17,7 @@ public class Throttler {
     private long lastCall = 0L;
 
     @Autowired
-    public Throttler(@Value("${calendar.api.throttle}") int callsPerSecond) {
+    public Throttler(@Value("${google.api.throttle}") int callsPerSecond) {
         this.delay = 1000 / callsPerSecond;
     }
 

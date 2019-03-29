@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class ExportByYearController extends FxController {
+public class ExportByYearController implements FxController {
 
     private final DateService dateService;
     private final ExportRootController exportRootController;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class ExportByDateController extends FxController {
+public class ExportByDateController implements FxController {
 
     public Label title;
     public DatePicker dateFrom;

@@ -1,6 +1,7 @@
 package ch.awae.esgcal.fx.publish;
 
 import ch.awae.esgcal.FxController;
+import ch.awae.esgcal.fx.modal.ErrorReportService;
 import ch.awae.esgcal.model.Calendar;
 import ch.awae.esgcal.service.CalendarService;
 import ch.awae.utils.functional.T2;
@@ -24,22 +25,18 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class PublishingCalendarSelectionController extends FxController {
+public class PublishingCalendarSelectionController implements FxController {
 
     public ListView<ListEntry> calendarList;
 
     private ObservableList<ListEntry> calendarPairs = FXCollections.observableArrayList();
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private final CalendarService calendarService;
     private final PublishingRootController publishingRootController;
     private final PublishingEventSelectionController publishingEventSelectionController;
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    @Override
-    public void initialize() {
-        super.initialize();
-    }
+    private final ErrorReportService errorReportService;
 
     void fetch(LocalDate startDate, LocalDate endDate) throws Exception {
         this.startDate = startDate;
@@ -66,7 +63,7 @@ public class PublishingCalendarSelectionController extends FxController {
         publishingRootController.showDateSelection();
     }
 
-    public void onNext() throws Exception {
+    public void onNext() {
         List<T2<Calendar, Calendar>> selected = new ArrayList<>();
 
         for (ListEntry entry : calendarPairs) {
@@ -75,8 +72,12 @@ public class PublishingCalendarSelectionController extends FxController {
             }
         }
 
-        publishingEventSelectionController.fetch(selected, startDate, endDate);
-        publishingRootController.showEventSelection();
+        try {
+            publishingEventSelectionController.fetch(selected, startDate, endDate);
+            publishingRootController.showEventSelection();
+        } catch (Exception e) {
+            errorReportService.report(e);
+        }
     }
 
     @Data
