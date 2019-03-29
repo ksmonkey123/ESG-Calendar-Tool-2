@@ -14,7 +14,7 @@
 
     <top>
         <HBox alignment="CENTER">
-            <Label fx:id="title" />
+            <Label fx:id="title" styleClass="bold"/>
         </HBox>
     </top>
 

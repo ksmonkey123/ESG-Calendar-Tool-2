@@ -17,6 +17,15 @@
         <Insets top="20" bottom="20" />
     </padding>
 
+    <top>
+        <HBox alignment="CENTER">
+            <padding>
+                <Insets bottom="20"/>
+            </padding>
+            <Label>Termine auswählen</Label>
+        </HBox>
+    </top>
+
     <center>
         <TabPane fx:id="tabs"/>
     </center>

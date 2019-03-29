@@ -15,4 +15,8 @@
 	visibility: hidden;
 }
 
+.bold {
+    -fx-font-weight: bold;
+}
+
 .list-view, .split-pane { -fx-background-insets: 0; -fx-padding: 0; }
