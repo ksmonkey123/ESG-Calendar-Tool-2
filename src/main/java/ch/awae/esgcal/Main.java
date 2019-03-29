@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.Locale;
+
 @SpringBootApplication
 public class Main extends Application {
 
@@ -16,6 +18,7 @@ public class Main extends Application {
     private Parent rootNode;
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.GERMANY);
         launch(args);
     }
 

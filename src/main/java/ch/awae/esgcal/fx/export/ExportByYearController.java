@@ -1,7 +1,9 @@
 package ch.awae.esgcal.fx.export;
 
 import ch.awae.esgcal.FxController;
+import ch.awae.esgcal.fx.RootController;
 import ch.awae.esgcal.fx.modal.SaveLocationService;
+import ch.awae.esgcal.model.JahresExport;
 import ch.awae.esgcal.service.DateService;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -15,10 +17,12 @@ import java.util.Optional;
 public class ExportByYearController extends FxController {
 
     private final DateService dateService;
-    private final SaveLocationService saveLocationService;
+    private final ExportRootController exportRootController;
 
     public ComboBox<Integer> year;
-    public Label saveLocationLabel;
+    public Label title;
+
+    private JahresExport exportType;
 
     @Override
     public void initialize() {
@@ -26,8 +30,17 @@ public class ExportByYearController extends FxController {
         year.getSelectionModel().select(1);
     }
 
-    public void onChooseLocation() {
-        Optional<String> result = saveLocationService.prompt("Jahresplan", ".xlsm");
-        saveLocationLabel.setText("Speichern unter: " + result.orElse("(bitte wählen)"));
+    public void onBack() {
+        exportRootController.reset();
+    }
+
+    void reset(JahresExport exportType) {
+        this.exportType = exportType;
+        this.title.setText(exportType.getText());
+        initialize();
+    }
+
+    public void onExecute() {
+        // TODO
     }
 }

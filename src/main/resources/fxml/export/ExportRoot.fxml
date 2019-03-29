@@ -4,32 +4,56 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<TabPane xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml"
-         fx:controller="ch.awae.esgcal.fx.export.ExportRootController"
-         fx:id="tabs">
+<?import javafx.scene.layout.HBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ch.awae.esgcal.fx.export.ExportRootController">
 
-    <padding>
-        <Insets top="-10"/>
-    </padding>
-    <Tab closable="false" fx:id="menuTab">
-        <BorderPane>
+    <top>
+        <HBox alignment="CENTER">
             <padding>
-                <Insets top="20" right="20" left="20" bottom="20" />
+                <Insets top="20" bottom="-40"/>
             </padding>
-            <center>
-                <VBox spacing="50" alignment="CENTER">
-                    <Button onAction="#onJahresplanESG">Jahresplan ESG</Button>
-                    <Button onAction="#onJahresplanBern">Jahresplan Bern</Button>
-                    <Button onAction="#onJahresplanZuerich">Jahresplan Zürich</Button>
-                    <Button onAction="#onPropenplanBern">Probenplan Bern</Button>
-                    <Button onAction="#onProbenplanZuerich">Probenplan Zürich</Button>
-                    <Button onAction="#onGantaetgigeTermine">Ganztägige Termine</Button>
-                </VBox>
-            </center>
-        </BorderPane>
-    </Tab>
-    <Tab closable="false" fx:id="yearTab">
-        <fx:include source="ExportByYear.fxml"/>
-    </Tab>
-</TabPane>
+            <Label styleClass="bold">Export</Label>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="tabs">
+            <Tab closable="false" fx:id="menuTab">
+                <BorderPane>
+                    <padding>
+                        <Insets top="20" bottom="20" left="20" right="20"/>
+                    </padding>
+                    <center>
+                        <VBox spacing="30" alignment="CENTER">
+                            <Button onAction="#onJahresplanESG">Jahresplan ESG</Button>
+                            <Button onAction="#onJahresplanBern">Jahresplan Bern</Button>
+                            <Button onAction="#onJahresplanZuerich">Jahresplan Zürich</Button>
+                            <Button onAction="#onPropenplanBern">Probenplan Bern</Button>
+                            <Button onAction="#onProbenplanZuerich">Probenplan Zürich</Button>
+                            <Button onAction="#onGantaetgigeTermine">Ganztägige Termine</Button>
+                        </VBox>
+                    </center>
+                    <bottom>
+                        <BorderPane>
+                            <padding>
+                                <Insets top="20"/>
+                            </padding>
+                            <left>
+                                <Button onAction="#onBack">Zurück</Button>
+                            </left>
+                        </BorderPane>
+                    </bottom>
+                </BorderPane>
+            </Tab>
+            <Tab closable="false" fx:id="yearTab">
+                <fx:include source="ExportByYear.fxml"/>
+            </Tab>
+            <Tab closable="false" fx:id="dateTab">
+                <fx:include source="ExportByDate.fxml"/>
+            </Tab>
+        </TabPane>
+    </center>
+
+</BorderPane>
