@@ -33,6 +33,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         stage.setScene(new Scene(rootNode));
+        stage.setOnCloseRequest(windowEvent -> System.exit(0));
         stage.show();
         String version = springContext.getEnvironment().getProperty("version");
         stage.setTitle("ESG Tool " + version);

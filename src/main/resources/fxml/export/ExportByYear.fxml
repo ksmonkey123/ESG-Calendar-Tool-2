@@ -8,7 +8,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ch.awae.esgcal.fx.export.ExportByYearController">
+            fx:controller="ch.awae.esgcal.core.fx.export.ExportByYearController">
 
     <padding>
         <Insets bottom="20" left="20" right="20"/>

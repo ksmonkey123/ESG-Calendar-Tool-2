@@ -1,6 +1,6 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.model.Calendar;
+import ch.awae.esgcal.core.service.api.Calendar;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

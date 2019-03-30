@@ -1,6 +1,7 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.service.datasource.LoginService;
+import ch.awae.esgcal.core.service.api.ApiException;
+import ch.awae.esgcal.core.service.api.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,11 @@ public class AuthorizationServiceAdapter implements LoginService {
     private final AuthorizationService authorizationService;
 
     @Override
-    public void login() throws Exception {
-        authorizationService.authorize();
+    public void login() throws ApiException {
+        try {
+            authorizationService.authorize();
+        } catch (Exception e) {
+            throw new ApiException(e);
+        }
     }
 }

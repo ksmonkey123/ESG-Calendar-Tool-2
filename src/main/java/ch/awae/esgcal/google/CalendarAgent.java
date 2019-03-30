@@ -21,28 +21,33 @@ import java.util.List;
 @RequiredArgsConstructor
 class CalendarAgent {
 
-    private final AuthorizationService authenticationService;
+    private final AuthorizationService authorizationService;
     private final JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
     private final Throttler throttler;
 
     private Calendar api = null;
 
-    private synchronized void initialize() throws GeneralSecurityException, IOException {
+    private void verifyInitialized() throws GeneralSecurityException, IOException {
         if (api == null) {
-            authenticationService.verifyAuthenticated();
-            Credential credentials = authenticationService.getCredentials();
-            val httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            api = new Calendar.Builder(httpTransport, jsonFactory, credentials).setApplicationName("ESG Calendar Tool").build();
+            initialize();
         }
     }
 
+    private synchronized void initialize() throws GeneralSecurityException, IOException {
+        if (api != null)
+            return;
+        Credential credentials = authorizationService.getCredentials();
+        val httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        api = new Calendar.Builder(httpTransport, jsonFactory, credentials).setApplicationName("ESG Calendar Tool").build();
+    }
+
     List<CalendarListEntry> getCalendarList() throws Exception {
-        initialize();
+        verifyInitialized();
         return throttler.execute(() -> api.calendarList().list().execute().getItems());
     }
 
     List<Event> getEventsOfCalendar(CalendarListEntry calendar, T2<Date, Date> range) throws Exception {
-        initialize();
+        verifyInitialized();
         val from = range._1;
         val to = range._2;
         assert (from.before(to));
@@ -54,7 +59,7 @@ class CalendarAgent {
     }
 
     void moveEvent(Event event, CalendarListEntry from, CalendarListEntry to) throws Exception {
-        initialize();
+        verifyInitialized();
         throttler.execute(() -> api.events().move(from.getId(), event.getId(), to.getId()).execute());
     }
 }

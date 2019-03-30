@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ch.awae.esgcal.fx.publish.PublishingCalendarSelectionController">
+            fx:controller="ch.awae.esgcal.core.fx.publish.PublishingCalendarSelectionController">
 
     <padding>
         <Insets top="20" right="20" left="20" bottom="20" />

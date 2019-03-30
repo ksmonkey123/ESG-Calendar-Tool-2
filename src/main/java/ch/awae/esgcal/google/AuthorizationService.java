@@ -6,7 +6,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
-import lombok.Getter;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,6 @@ class AuthorizationService {
     private final long timeout;
     private final boolean enable;
 
-    @Getter
     private Credential credentials = null;
 
     @Autowired
@@ -43,7 +41,7 @@ class AuthorizationService {
         this.enable = enable;
     }
 
-    void authorize() throws GeneralSecurityException, IOException, InterruptedException {
+    synchronized void authorize() throws GeneralSecurityException, IOException, InterruptedException {
         if (!enable) {
             System.out.println("authentication service disabled. google api will not work");
             return;
@@ -73,9 +71,10 @@ class AuthorizationService {
         return flow;
     }
 
-    void verifyAuthenticated() {
+    synchronized Credential getCredentials() {
         if (credentials == null) {
             throw new IllegalStateException("Google Calendar API not authorized!");
         }
+        return credentials;
     }
 }

@@ -14,7 +14,7 @@ google:
   login:
     timeout: 120
     port: 8080
-    enable: true
+    enable: false
   api:
     throttle: 5
 
