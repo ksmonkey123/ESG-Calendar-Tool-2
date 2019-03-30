@@ -1,10 +1,15 @@
 package ch.awae.esgcal.core.fx.export;
 
-import ch.awae.esgcal.core.fx.FxController;
+import ch.awae.esgcal.core.export.ExportByDateService;
 import ch.awae.esgcal.core.export.ExportByDateType;
+import ch.awae.esgcal.core.fx.FxController;
+import ch.awae.esgcal.core.fx.RootController;
+import ch.awae.esgcal.core.fx.modal.ErrorReportService;
+import ch.awae.esgcal.core.fx.modal.PopupService;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -16,10 +21,15 @@ public class ExportByDateController implements FxController {
     public DatePicker dateFrom;
     public DatePicker dateTo;
     public Button executeButton;
+    public BorderPane pane;
 
     private ExportByDateType exportType;
 
     private final ExportRootController exportRootController;
+    private final ExportByDateService exportByDateService;
+    private final PopupService popupService;
+    private final ErrorReportService errorReportService;
+    private final RootController rootController;
 
     @Override
     public void initialize() {
@@ -47,7 +57,16 @@ public class ExportByDateController implements FxController {
     }
 
     public void onExecute() {
-        // TODO
+        pane.setDisable(true);
+        try {
+            if (exportByDateService.performExport(exportType, dateFrom.getValue(), dateTo.getValue())) {
+                popupService.info("Export ausgeführt");
+                rootController.showMenu();
+            }
+        } catch (Exception e) {
+            errorReportService.report(e);
+        }
+        pane.setDisable(false);
     }
 
 }

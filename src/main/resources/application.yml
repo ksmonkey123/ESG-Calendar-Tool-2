@@ -18,11 +18,11 @@ google:
   api:
     throttle: 5
 
+calendar:
+  planning-suffix: " - Planung"
+
 # Export Configuration
 export:
   source:
     jahresplan:
       esg: "JP.xlsm"
-      be: "%new"
-      zh: "%new"
-      fullday: "%new"

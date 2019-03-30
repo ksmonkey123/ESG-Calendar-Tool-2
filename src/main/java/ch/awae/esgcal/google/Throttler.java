@@ -1,24 +1,27 @@
 package ch.awae.esgcal.google;
 
+import ch.awae.esgcal.PostConstructBean;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Component
-class Throttler {
+class Throttler implements PostConstructBean {
 
     private final ReentrantLock lock = new ReentrantLock(true);
     // milliseconds between calls
-    private final int delay;
+    private int delay;
     private long lastCall = 0L;
 
-    @Autowired
-    public Throttler(@Value("${google.api.throttle}") int callsPerSecond) {
-        this.delay = 1000 / callsPerSecond;
+    @Override
+    public void postContruct(ApplicationContext context) {
+        this.delay = 1000 / context.getEnvironment().getRequiredProperty("google.api.throttle", int.class);
     }
 
     /**
