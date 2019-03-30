@@ -1,4 +1,4 @@
-package ch.awae.esgcal.core.service.export;
+package ch.awae.esgcal.core.export;
 
 public class ExportException extends Exception {
 

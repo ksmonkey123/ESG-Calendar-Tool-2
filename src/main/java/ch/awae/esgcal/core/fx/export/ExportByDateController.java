@@ -1,7 +1,7 @@
 package ch.awae.esgcal.core.fx.export;
 
 import ch.awae.esgcal.core.fx.FxController;
-import ch.awae.esgcal.core.service.export.ExportByDateType;
+import ch.awae.esgcal.core.export.ExportByDateType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;

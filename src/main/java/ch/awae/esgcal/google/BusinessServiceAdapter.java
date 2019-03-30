@@ -1,10 +1,10 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.core.service.api.Calendar;
-import ch.awae.esgcal.core.service.api.Event;
-import ch.awae.esgcal.core.service.api.ApiException;
-import ch.awae.esgcal.core.service.api.CalendarService;
-import ch.awae.esgcal.core.service.api.EventService;
+import ch.awae.esgcal.core.api.Calendar;
+import ch.awae.esgcal.core.api.Event;
+import ch.awae.esgcal.core.api.ApiException;
+import ch.awae.esgcal.core.api.CalendarService;
+import ch.awae.esgcal.core.api.EventService;
 import ch.awae.utils.functional.T2;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import lombok.RequiredArgsConstructor;

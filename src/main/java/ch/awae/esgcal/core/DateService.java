@@ -1,4 +1,4 @@
-package ch.awae.esgcal.core.service;
+package ch.awae.esgcal.core;
 
 import org.springframework.stereotype.Service;
 

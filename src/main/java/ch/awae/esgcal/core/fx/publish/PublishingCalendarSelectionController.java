@@ -2,8 +2,8 @@ package ch.awae.esgcal.core.fx.publish;
 
 import ch.awae.esgcal.core.fx.FxController;
 import ch.awae.esgcal.core.fx.modal.ErrorReportService;
-import ch.awae.esgcal.core.service.api.Calendar;
-import ch.awae.esgcal.core.service.api.CalendarService;
+import ch.awae.esgcal.core.api.Calendar;
+import ch.awae.esgcal.core.api.CalendarService;
 import ch.awae.utils.functional.T2;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

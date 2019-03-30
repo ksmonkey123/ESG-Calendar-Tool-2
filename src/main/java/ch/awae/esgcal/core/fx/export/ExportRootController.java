@@ -2,8 +2,8 @@ package ch.awae.esgcal.core.fx.export;
 
 import ch.awae.esgcal.core.fx.FxController;
 import ch.awae.esgcal.core.fx.RootController;
-import ch.awae.esgcal.core.service.export.ExportByDateType;
-import ch.awae.esgcal.core.service.export.ExportByYearType;
+import ch.awae.esgcal.core.export.ExportByDateType;
+import ch.awae.esgcal.core.export.ExportByYearType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.RequiredArgsConstructor;

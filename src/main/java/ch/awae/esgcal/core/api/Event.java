@@ -1,4 +1,4 @@
-package ch.awae.esgcal.core.service.api;
+package ch.awae.esgcal.core.api;
 
 import java.time.LocalDateTime;
 

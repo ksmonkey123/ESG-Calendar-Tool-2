@@ -1,4 +1,4 @@
-package ch.awae.esgcal.core.service.export;
+package ch.awae.esgcal.core.export;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

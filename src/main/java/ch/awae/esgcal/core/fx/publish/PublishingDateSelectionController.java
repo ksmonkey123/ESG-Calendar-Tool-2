@@ -3,7 +3,7 @@ package ch.awae.esgcal.core.fx.publish;
 import ch.awae.esgcal.core.fx.FxController;
 import ch.awae.esgcal.core.fx.RootController;
 import ch.awae.esgcal.core.fx.modal.ErrorReportService;
-import ch.awae.esgcal.core.service.DateService;
+import ch.awae.esgcal.core.DateService;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import lombok.RequiredArgsConstructor;

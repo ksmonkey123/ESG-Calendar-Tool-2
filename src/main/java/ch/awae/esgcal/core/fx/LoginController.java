@@ -1,8 +1,8 @@
 package ch.awae.esgcal.core.fx;
 
 import ch.awae.esgcal.core.fx.modal.ErrorReportService;
-import ch.awae.esgcal.core.service.AsyncJobService;
-import ch.awae.esgcal.core.service.api.LoginService;
+import ch.awae.esgcal.core.AsyncJobService;
+import ch.awae.esgcal.core.api.LoginService;
 import javafx.scene.control.Button;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

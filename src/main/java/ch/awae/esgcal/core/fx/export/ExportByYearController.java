@@ -1,8 +1,8 @@
 package ch.awae.esgcal.core.fx.export;
 
 import ch.awae.esgcal.core.fx.FxController;
-import ch.awae.esgcal.core.service.export.ExportByYearType;
-import ch.awae.esgcal.core.service.DateService;
+import ch.awae.esgcal.core.export.ExportByYearType;
+import ch.awae.esgcal.core.DateService;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import lombok.RequiredArgsConstructor;
