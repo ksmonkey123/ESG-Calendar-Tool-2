@@ -15,12 +15,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class GanztagExport implements ExportPipelineSpecification<GanztagExport.Entry>, PostConstructBean {
+public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanExport.Entry>, PostConstructBean {
 
     private final DecoratedEventService eventService;
     private final SaveLocationService saveLocationService;
@@ -35,45 +36,29 @@ public class GanztagExport implements ExportPipelineSpecification<GanztagExport.
 
     @Override
     public Map<ExportCalendar, List<Event>> fetchEvents(LocalDate fromDate, LocalDate toDate) throws ApiException {
-        return eventService.listEvents(fromDate, toDate, ExportCalendar.BERN, ExportCalendar.ZUERICH, ExportCalendar.KONZERTE);
+        return eventService.listEvents(fromDate, toDate, ExportCalendar.BERN);
     }
 
     @Override
     public Entry extractData(ExportCalendar exportCalendar, Event event) {
-        return new Entry(Collections.singletonList(exportCalendar), event.getTitle());
+        return new Entry(event.getStart().toLocalTime(), event.getTitle());
     }
 
     @Override
     public List<Entry> mergeEvents(LocalDate localDate, List<Entry> events) {
-        Map<String, List<ExportCalendar>> map = new HashMap<>();
-
-        for (Entry event : events) {
-            List<ExportCalendar> calendars = map.computeIfAbsent(event.event, e -> new ArrayList<>());
-            for (ExportCalendar calendar : event.calendars) {
-                if (!calendars.contains(calendar))
-                    calendars.add(calendar);
-            }
-        }
-
-        List<Entry> results = new ArrayList<>();
-        for (Map.Entry<String, List<ExportCalendar>> entry : map.entrySet()) {
-            results.add(new Entry(entry.getValue(), entry.getKey()));
-        }
-        return results;
+        List<Entry> list = new ArrayList<>(events);
+        list.sort(Comparator.comparing(Entry::getTime));
+        return list;
     }
 
     @Data
     static class Entry {
-        private final List<ExportCalendar> calendars;
+        private final LocalTime time;
         private final String event;
-
-        String getCalendarList() {
-            return calendars.stream().map(ExportCalendar::getTitle).reduce((a, b) -> a + " / " + b).orElse("");
-        }
     }
 
-    public boolean export(LocalDate dateFrom, LocalDate dateTo) throws ApiException, SpreadsheetException {
-        Optional<String> saveFile = saveLocationService.prompt("GanztaegigeTermine", fileSuffix);
+    public boolean export(LocalDate dateFrom, LocalDate dateTo, ExportCalendar calendar) throws ApiException, SpreadsheetException {
+        Optional<String> saveFile = saveLocationService.prompt("Probenplan" + calendar.getTitle(), fileSuffix);
         if (!saveFile.isPresent())
             return false;
 
@@ -86,25 +71,29 @@ public class GanztagExport implements ExportPipelineSpecification<GanztagExport.
 
     private void writeSpreadsheet(List<ProcessedDate<Entry>> dates, String file) throws SpreadsheetException {
         Workbook workbook = spreadsheetService.emptyWorkbook();
-        Sheet sheet = workbook.getSheet("Übersicht");
+        Sheet sheet = workbook.getSheet("Probenplan");
 
-        sheet.cell(0, 0).write("Datum");
-        sheet.cell(0, 1).write("Kalender");
-        sheet.cell(0, 2).write("Termin");
-        sheet.cell(0, 3).write("von");
-        sheet.cell(0, 4).write("bis");
+        DateTimeFormatter dow = DateTimeFormatter.ofPattern("E");
+        DateTimeFormatter day = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E, dd.MM.yyyy");
-
-        int row = 1;
+        int row = 0;
 
         for (ProcessedDate<Entry> date : dates) {
-            for (Entry entry : date.getEvents()) {
-                sheet.cell(row, 0).write(date.getDate().format(dtf));
-                sheet.cell(row, 1).write(entry.getCalendarList());
-                sheet.cell(row, 2).write(entry.getEvent());
+            sheet.cell(row, 0).write(date.getDate().format(dow));
+            sheet.cell(row, 1).write(date.getDate().format(day));
+            for (Entry event : date.getEvents()) {
+                sheet.cell(row, 2).write(event.time.format(time));
+                sheet.cell(row, 3).write(event.event);
                 row++;
             }
+        }
+
+        for (int i = 0; i < 100; i++) {
+            sheet.cell(row + i, 0).write("    ");
+            sheet.cell(row + i, 1).write("    ");
+            sheet.cell(row + i, 2).write("    ");
+            sheet.cell(row + i, 3).write("    ");
         }
 
         spreadsheetService.saveWorkbook(workbook, file);
