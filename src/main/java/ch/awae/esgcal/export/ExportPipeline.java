@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-class ExportPipeline<T> {
+public class ExportPipeline<T> {
 
     private final ExportPipelineSpecification<T> specification;
 
-    List<ProcessedEvent<T>> execute(LocalDate fromDate, LocalDate toDate) throws ApiException {
+    public List<ProcessedDate<T>> execute(LocalDate fromDate, LocalDate toDate) throws ApiException {
         return getRawEventList(fromDate, toDate).parallelStream()
                 // extract event date
                 .map(tuple -> T2.of(tuple._2, specification.extractData(tuple._1, tuple._2)))
@@ -38,7 +38,7 @@ class ExportPipeline<T> {
                 // sort by date
                 .sorted(Comparator.comparing(tuple -> tuple._1))
                 // collect into pretty object
-                .map(ProcessedEvent::new)
+                .map(ProcessedDate::new)
                 // collect into a list
                 .collect(Collectors.toList());
 

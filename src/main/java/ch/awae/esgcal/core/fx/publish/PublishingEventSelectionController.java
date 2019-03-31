@@ -63,7 +63,7 @@ public class PublishingEventSelectionController implements FxController {
 
         for (Event event : events) {
             ListEntry e = new ListEntry(pair._1, pair._2, event, new SimpleBooleanProperty());
-            if (unpublish)
+            if (!unpublish)
                 e = e.selected();
             entries.add(e);
             list.add(e);

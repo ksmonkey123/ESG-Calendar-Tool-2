@@ -6,7 +6,6 @@ import ch.awae.esgcal.core.api.Event;
 import ch.awae.esgcal.core.api.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
-import org.apache.poi.ss.formula.functions.Even;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,13 +16,13 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-class DecoratedEventService {
+public class DecoratedEventService {
 
     @Delegate
     private final EventService eventService;
     private final DecoratedCalendarService calendarService;
 
-    Map<ExportCalendar, List<Event>> listEvents(LocalDate dateFrom, LocalDate dateTo, ExportCalendar... calendars) throws ApiException {
+    public Map<ExportCalendar, List<Event>> listEvents(LocalDate dateFrom, LocalDate dateTo, ExportCalendar... calendars) throws ApiException {
         Map<ExportCalendar, List<Event>> map = new HashMap<>();
 
         for (ExportCalendar calendar : calendars) {

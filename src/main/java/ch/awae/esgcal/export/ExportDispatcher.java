@@ -2,6 +2,7 @@ package ch.awae.esgcal.export;
 
 import ch.awae.esgcal.core.export.ExportByDateType;
 import ch.awae.esgcal.core.export.ExportByYearType;
+import ch.awae.esgcal.export.impl.GanztagExport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

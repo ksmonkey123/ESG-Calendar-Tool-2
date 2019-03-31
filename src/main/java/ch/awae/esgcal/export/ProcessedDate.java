@@ -7,12 +7,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-class ProcessedEvent<T> {
+public class ProcessedDate<T> {
 
     private final LocalDate date;
     private final List<T> events;
 
-    ProcessedEvent(T2<LocalDate, List<T>> tuple) {
+    ProcessedDate(T2<LocalDate, List<T>> tuple) {
         this.date = tuple._1;
         this.events = tuple._2;
     }

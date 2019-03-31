@@ -20,3 +20,8 @@ google:
 
 calendar:
   planning-suffix: " - Planung"
+
+# Export Config
+export:
+  format: ".xlsx"
+  formatESG: ".xlsm"

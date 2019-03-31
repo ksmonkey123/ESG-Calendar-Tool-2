@@ -7,12 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-interface ExportPipelineSpecification<T> {
+public interface ExportPipelineSpecification<T> {
 
     /**
      * fetch the relevant raw data.
-     * @param fromDate
-     * @param toDate
      */
     Map<ExportCalendar, List<Event>> fetchEvents(LocalDate fromDate, LocalDate toDate) throws ApiException;
 
