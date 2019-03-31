@@ -40,7 +40,7 @@ public class Main extends Application {
         Collection<PostConstructBean> beans = springContext.getBeansOfType(PostConstructBean.class).values();
         log.info("running postConstruct on " + beans.size() + " beans");
         for (PostConstructBean bean : beans) {
-           log.info(" - " + bean);
+            log.info(" - " + bean);
             bean.postContruct(springContext);
         }
     }

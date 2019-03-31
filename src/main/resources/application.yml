@@ -14,15 +14,9 @@ google:
   login:
     timeout: 120
     port: 8080
-    enable: false
+    enable: true
   api:
     throttle: 5
 
 calendar:
   planning-suffix: " - Planung"
-
-# Export Configuration
-export:
-  source:
-    jahresplan:
-      esg: "JP.xlsm"
