@@ -29,7 +29,7 @@ public class PublishingCalendarSelectionController implements FxController, Post
 
     public ListView<ListEntry> calendarList;
 
-    private ObservableList<ListEntry> calendarPairs = FXCollections.observableArrayList();
+    private final ObservableList<ListEntry> calendarPairs = FXCollections.observableArrayList();
     private LocalDate startDate, endDate;
 
     private String suffix;
