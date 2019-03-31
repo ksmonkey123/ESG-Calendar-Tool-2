@@ -12,8 +12,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Collection;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Log
 @SpringBootApplication

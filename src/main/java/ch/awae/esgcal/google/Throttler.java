@@ -1,10 +1,6 @@
 package ch.awae.esgcal.google;
 
 import ch.awae.esgcal.PostConstructBean;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +26,7 @@ class Throttler implements PostConstructBean {
      */
     <T> T execute(Callable<T> code) throws Exception {
         lock.lock();
-        val myEntry = lastCall + delay;
+        long myEntry = lastCall + delay;
         while (myEntry > System.currentTimeMillis()) {
             Thread.sleep(0);
         }
