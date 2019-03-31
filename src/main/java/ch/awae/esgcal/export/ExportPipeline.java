@@ -20,9 +20,11 @@ public class ExportPipeline<T> {
     private final ExportPipelineSpecification<T> specification;
 
     public List<ProcessedDate<T>> execute(LocalDate fromDate, LocalDate toDate) throws ApiException {
-        return getRawEventList(fromDate, toDate).parallelStream()
+        return getRawEventList(fromDate, toDate).stream()
                 // extract event date
                 .map(tuple -> T2.of(tuple._2, specification.extractData(tuple._1, tuple._2)))
+                // sort by starting date and time
+                .sorted(Comparator.comparing(tuple -> tuple._1.getStart()))
                 // filter out null data
                 .filter(tuple -> tuple._2 != null)
                 // fragment events if they overlap midnight
@@ -31,17 +33,16 @@ public class ExportPipeline<T> {
                 .filter(tuple -> specification.filterData(tuple._1, tuple._2))
                 // group by date
                 .collect(Collectors.groupingBy(t -> t._1)).entrySet().stream()
-                // conversion Entry<Date, T2<Date, List<T>>> ==> T2<Date, Stream<T>>
+                // conversion Entry<Date, T2<Date, List<T>>> ==> T2<Date, List<T>>
                 .map(entry -> T2.of(entry.getKey(), entry.getValue().stream().map(t -> t._2).collect(Collectors.toList())))
                 // allow specification to merge elements within the same date
                 .map(tuple -> T2.of(tuple._1, specification.mergeEvents(tuple._1, tuple._2)))
                 // sort by date
                 .sorted(Comparator.comparing(tuple -> tuple._1))
                 // collect into pretty object
-                .map(ProcessedDate::new)
+                .map(ProcessedDate::of)
                 // collect into a list
                 .collect(Collectors.toList());
-
     }
 
     private Stream<T2<LocalDate, T>> fragment(T2<Event, T> event) {

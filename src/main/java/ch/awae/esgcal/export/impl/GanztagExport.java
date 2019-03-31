@@ -80,7 +80,6 @@ public class GanztagExport implements ExportPipelineSpecification<GanztagExport.
         List<ProcessedDate<Entry>> dates = new ExportPipeline<>(this).execute(dateFrom, dateTo);
 
         writeSpreadsheet(dates, saveFile.get());
-
         return true;
     }
 

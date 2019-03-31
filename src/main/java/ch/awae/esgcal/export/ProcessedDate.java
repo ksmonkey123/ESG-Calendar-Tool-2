@@ -12,9 +12,8 @@ public class ProcessedDate<T> {
     private final LocalDate date;
     private final List<T> events;
 
-    ProcessedDate(T2<LocalDate, List<T>> tuple) {
-        this.date = tuple._1;
-        this.events = tuple._2;
+    public static <T> ProcessedDate<T> of(T2<LocalDate, List<T>> tuple) {
+        return new ProcessedDate<>(tuple._1, tuple._2);
     }
 
 }

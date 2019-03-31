@@ -24,4 +24,8 @@ public class DateService {
     public LocalDate getBeginningOfYear() {
         return LocalDate.now().withDayOfYear(1);
     }
+
+    public LocalDate date(int year, int month, int day) {
+        return LocalDate.of(year, month, day);
+    }
 }
