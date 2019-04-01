@@ -39,6 +39,9 @@ class AuthorizationService implements PostConstructBean {
         port = env.getRequiredProperty("google.login.port", int.class);
         timeout = env.getRequiredProperty("google.login.timeout", long.class);
         enable = env.getRequiredProperty("google.login.enable", boolean.class);
+        log.config("port = " + port);
+        log.config("timeout = " + timeout + "s");
+        log.config("enabled = " + enable);
     }
 
     synchronized void authorize() throws GeneralSecurityException, IOException, InterruptedException {
@@ -46,9 +49,11 @@ class AuthorizationService implements PostConstructBean {
             log.warning("authentication service disabled. google api will not work");
             return;
         }
+        log.info("starting authorization process with Google API");
         val flow = directUserToLogin(port);
         val code = server.getCode(port, timeout);
         this.credentials = getToken(flow, code, port);
+        log.info("login completed");
     }
 
     private Credential getToken(GoogleAuthorizationCodeFlow flow, String code, int port) throws IOException {

@@ -16,6 +16,7 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -23,6 +24,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log
 @Controller
 @RequiredArgsConstructor
 public class PublishingCalendarSelectionController implements FxController, PostConstructBean {
@@ -41,11 +43,13 @@ public class PublishingCalendarSelectionController implements FxController, Post
     @Override
     public void postContruct(ApplicationContext context) {
         suffix = context.getEnvironment().getRequiredProperty("calendar.planning-suffix");
+        log.config("calendarSuffix = '" + suffix + "'");
     }
 
     void fetch(LocalDate startDate, LocalDate endDate) throws ApiException {
         this.startDate = startDate;
         this.endDate = endDate;
+        log.info("fetching calendar pairs");
         boolean unpublish = publishingRootController.isUnpublish();
         List<T2<Calendar, Calendar>> pairs = calendarService.getCalendarPairs(suffix);
         this.calendarPairs.clear();
@@ -56,15 +60,18 @@ public class PublishingCalendarSelectionController implements FxController, Post
                 this.calendarPairs.add(new ListEntry(pair._2, pair._1, new SimpleBooleanProperty()));
             }
         }
+        log.info("found " + this.calendarPairs.size() + " calendar pairs");
         calendarList.setItems(this.calendarPairs);
         calendarList.setCellFactory(CheckBoxListCell.forListView(ListEntry::getSelection));
     }
 
     public void onBack() {
+        log.info("returning to date selection");
         publishingRootController.showDateSelection();
     }
 
     public void onNext() {
+        log.info("transitioning to event selection");
         List<T2<Calendar, Calendar>> selected = new ArrayList<>();
 
         for (ListEntry entry : calendarPairs)
@@ -76,6 +83,7 @@ public class PublishingCalendarSelectionController implements FxController, Post
             publishingRootController.showEventSelection();
         } catch (Exception e) {
             errorReportService.report(e);
+            log.info("transition failed");
         }
     }
 

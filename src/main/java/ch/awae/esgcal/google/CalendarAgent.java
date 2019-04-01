@@ -9,6 +9,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 
+@Log
 @Service
 @RequiredArgsConstructor
 class CalendarAgent {
@@ -34,8 +36,7 @@ class CalendarAgent {
     }
 
     private synchronized void initialize() throws GeneralSecurityException, IOException {
-        if (api != null)
-            return;
+        log.info("initializing API");
         Credential credentials = authorizationService.getCredentials();
         val httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         api = new Calendar.Builder(httpTransport, jsonFactory, credentials).setApplicationName("ESG Calendar Tool").build();
@@ -43,6 +44,7 @@ class CalendarAgent {
 
     List<CalendarListEntry> getCalendarList() throws Exception {
         verifyInitialized();
+        log.info("request: list calendars");
         return throttler.execute(() -> api.calendarList().list().execute().getItems());
     }
 
@@ -52,6 +54,7 @@ class CalendarAgent {
         val to = range._2;
         assert (from.before(to));
 
+        log.info("request: events in calendar " + calendar.getId());
         return throttler.execute(() -> api.events().list(calendar.getId())
                 .setTimeMin(new DateTime(from))
                 .setTimeMax(new DateTime(to))
@@ -60,6 +63,7 @@ class CalendarAgent {
 
     void moveEvent(Event event, CalendarListEntry from, CalendarListEntry to) throws Exception {
         verifyInitialized();
+        log.info("request: move event " + event.getId() + " (" + from.getId() + " -> " + to.getId() + ")");
         throttler.execute(() -> api.events().move(from.getId(), event.getId(), to.getId()).execute());
     }
 }

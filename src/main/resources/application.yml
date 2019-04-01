@@ -9,6 +9,12 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 
+logging:
+  level:
+    ch:
+      awae:
+        esgcal: DEBUG
+
 # Google API Configuration
 google:
   login:

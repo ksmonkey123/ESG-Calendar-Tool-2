@@ -29,6 +29,7 @@ public class Main extends Application {
     public void init() throws Exception {
         springContext = SpringApplication.run(Main.class);
         runPostConstruct();
+        log.info("spring context initialized");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Root.fxml"));
         fxmlLoader.setControllerFactory(springContext::getBean);
         rootNode = fxmlLoader.load();
@@ -38,7 +39,7 @@ public class Main extends Application {
         Collection<PostConstructBean> beans = springContext.getBeansOfType(PostConstructBean.class).values();
         log.info("running postConstruct on " + beans.size() + " beans");
         for (PostConstructBean bean : beans) {
-            log.info(" - " + bean);
+            log.info(" - " + bean.getClass().getName());
             bean.postContruct(springContext);
         }
     }
@@ -46,7 +47,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         stage.setScene(new Scene(rootNode));
-        stage.setOnCloseRequest(windowEvent -> System.exit(0));
+        stage.setOnCloseRequest(windowEvent -> {
+            log.info("shutdown requested");
+            System.exit(0);
+        });
         stage.show();
         String version = springContext.getEnvironment().getProperty("version");
         stage.setTitle("ESG Tool " + version);

@@ -11,6 +11,7 @@ import ch.awae.esgcal.core.export.spreadsheet.Workbook;
 import ch.awae.esgcal.core.fx.modal.SaveLocationService;
 import ch.awae.esgcal.export.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Log
 @Service
 @RequiredArgsConstructor
 public class JahresplanExportZH implements ExportPipelineSpecification<String>, PostConstructBean {
@@ -35,6 +37,7 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String>, 
     @Override
     public void postContruct(ApplicationContext context) {
         fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
+        log.config("fileSuffix = " + fileSuffix);
     }
 
     @Override

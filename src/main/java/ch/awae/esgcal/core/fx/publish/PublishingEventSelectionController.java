@@ -6,6 +6,7 @@ import ch.awae.esgcal.core.api.EventService;
 import ch.awae.esgcal.core.fx.FxController;
 import ch.awae.esgcal.core.fx.RootController;
 import ch.awae.esgcal.core.fx.modal.ErrorReportService;
+import ch.awae.esgcal.core.fx.modal.PopupService;
 import ch.awae.utils.functional.T2;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log
 @Controller
 @RequiredArgsConstructor
 public class PublishingEventSelectionController implements FxController {
@@ -34,6 +37,7 @@ public class PublishingEventSelectionController implements FxController {
     private final PublishingRootController publishingRootController;
     private final RootController rootController;
     private final EventService eventService;
+    private final PopupService popupService;
 
     public TabPane tabs;
     public BorderPane pane;
@@ -41,6 +45,7 @@ public class PublishingEventSelectionController implements FxController {
     private List<T2<T2<Calendar, Calendar>, List<ListEntry>>> listEntries;
 
     void fetch(List<T2<Calendar, Calendar>> calendarPairs, LocalDate startDate, LocalDate endDate) throws Exception {
+        log.info("fetching events");
         boolean unpublish = publishingRootController.isUnpublish();
         tabs.getTabs().clear();
         listEntries = new ArrayList<>();
@@ -73,6 +78,7 @@ public class PublishingEventSelectionController implements FxController {
         listView.setCellFactory(CheckBoxListCell.forListView(ListEntry::getSelection));
         tab.setContent(listView);
         tabs.getTabs().add(tab);
+        log.info("added tab for calendar " + pair._1.getName() + " (" + events.size() + " events)");
     }
 
     private final static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yy (HH:mm) ");
@@ -97,10 +103,16 @@ public class PublishingEventSelectionController implements FxController {
     }
 
     public void onBack() {
+        log.info("returning to calendar selection");
         publishingRootController.showCalendarSelection();
     }
 
     public void onExecute() {
+        if (publishingRootController.isUnpublish()) {
+            log.info("performing unpublishing");
+        } else {
+            log.info("performing publishing");
+        }
         pane.setDisable(true);
         try {
             for (T2<T2<Calendar, Calendar>, List<ListEntry>> calendar : listEntries) {
@@ -110,9 +122,12 @@ public class PublishingEventSelectionController implements FxController {
                         events.add(entry.getEvent());
                 eventService.moveEvents(events, calendar._1._1, calendar._1._2);
             }
+            popupService.info("Ereignisse erfolgreich verschoben.");
+            log.info("(un)publishing done");
             rootController.showMenu();
         } catch (Exception e) {
             errorReportService.report(e);
+            log.info("(un)publishing failed");
         }
         pane.setDisable(false);
     }

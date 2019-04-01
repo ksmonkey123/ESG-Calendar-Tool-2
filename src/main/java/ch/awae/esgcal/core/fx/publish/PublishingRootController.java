@@ -6,8 +6,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 
+@Log
 @Controller
 @RequiredArgsConstructor
 public class PublishingRootController implements FxController {
@@ -36,14 +38,17 @@ public class PublishingRootController implements FxController {
     }
 
     void showCalendarSelection() {
+        log.info("showing calendar selection");
         tabs.getSelectionModel().select(calendarSelection);
     }
 
     void showDateSelection() {
+        log.info("showing date selection");
         tabs.getSelectionModel().select(dateSelection);
     }
 
     void showEventSelection() {
+        log.info("showing event selection");
         tabs.getSelectionModel().select(eventSelection);
     }
 }

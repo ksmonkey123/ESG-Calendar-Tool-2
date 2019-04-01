@@ -11,8 +11,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 
+@Log
 @Controller
 @RequiredArgsConstructor
 public class ExportByYearController implements FxController {
@@ -41,12 +43,14 @@ public class ExportByYearController implements FxController {
     }
 
     void reset(ExportByYearType exportType) {
+        log.info("resetting for " + exportType.getText());
         this.exportType = exportType;
         this.title.setText(exportType.getText());
         initialize();
     }
 
     public void onExecute() {
+        log.info("executing export");
         pane.setDisable(true);
         try {
             if (exportByYearService.performExport(exportType, year.getValue())) {
@@ -55,6 +59,7 @@ public class ExportByYearController implements FxController {
             }
         } catch (Exception e) {
             errorReportService.report(e);
+            log.info("export failed");
         }
         pane.setDisable(false);
     }

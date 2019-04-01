@@ -11,6 +11,7 @@ import ch.awae.esgcal.core.fx.modal.SaveLocationService;
 import ch.awae.esgcal.export.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Log
 @Service
 @RequiredArgsConstructor
 public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanExport.Entry>, PostConstructBean {
@@ -32,6 +34,7 @@ public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanE
     @Override
     public void postContruct(ApplicationContext context) {
         fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
+        log.config("fileSuffix = " + fileSuffix);
     }
 
     @Override
