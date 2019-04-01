@@ -1,9 +1,9 @@
 package ch.awae.esgcal.core.fx.export;
 
-import ch.awae.esgcal.core.export.ExportByYearService;
-import ch.awae.esgcal.core.fx.FxController;
-import ch.awae.esgcal.core.export.ExportByYearType;
 import ch.awae.esgcal.core.DateService;
+import ch.awae.esgcal.core.export.ExportByYearService;
+import ch.awae.esgcal.core.export.ExportByYearType;
+import ch.awae.esgcal.core.fx.FxController;
 import ch.awae.esgcal.core.fx.RootController;
 import ch.awae.esgcal.core.fx.modal.ErrorReportService;
 import ch.awae.esgcal.core.fx.modal.PopupService;
@@ -32,7 +32,7 @@ public class ExportByYearController implements FxController {
 
     @Override
     public void initialize() {
-        year.getItems().setAll(dateService.getYearsForSelection());
+        year.getItems().setAll(dateService.getYearsForSelection(10));
         year.getSelectionModel().select(1);
     }
 

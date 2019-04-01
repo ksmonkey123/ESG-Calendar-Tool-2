@@ -2,6 +2,7 @@ package ch.awae.esgcal.core;
 
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +10,12 @@ import java.util.List;
 @Service
 public class DateService {
 
-    public List<Integer> getYearsForSelection() {
+    public List<Integer> getYearsForSelection(int count) {
         List<Integer> years = new ArrayList<>();
 
         int year = LocalDate.now().getYear();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < count; i++) {
             years.add(year + i);
         }
         return years;
@@ -26,6 +27,10 @@ public class DateService {
     }
 
     public LocalDate date(int year, int month, int day) {
-        return LocalDate.of(year, month, day);
+        try {
+            return LocalDate.of(year, month, day);
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
