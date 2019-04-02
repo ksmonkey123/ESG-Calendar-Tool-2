@@ -4,6 +4,6 @@ import java.time.LocalDate;
 
 public interface ExportByDateService {
 
-    boolean performExport(ExportByDateType export, LocalDate fromDate, LocalDate toDate) throws ExportException;
+    void performExport(ExportByDateType export, String file, LocalDate fromDate, LocalDate toDate) throws ExportException;
 
 }

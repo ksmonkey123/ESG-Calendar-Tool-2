@@ -39,9 +39,6 @@ class AuthorizationService implements PostConstructBean {
         port = env.getRequiredProperty("google.login.port", int.class);
         timeout = env.getRequiredProperty("google.login.timeout", long.class);
         enable = env.getRequiredProperty("google.login.enable", boolean.class);
-        log.config("port = " + port);
-        log.config("timeout = " + timeout + "s");
-        log.config("enabled = " + enable);
     }
 
     synchronized void authorize() throws GeneralSecurityException, IOException, InterruptedException {

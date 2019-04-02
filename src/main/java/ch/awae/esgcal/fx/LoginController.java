@@ -1,6 +1,7 @@
 package ch.awae.esgcal.fx;
 
 import ch.awae.esgcal.api.calendar.LoginService;
+import ch.awae.esgcal.async.AsyncService;
 import ch.awae.esgcal.fx.modal.ErrorReportService;
 import javafx.scene.control.Button;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +18,25 @@ public class LoginController implements FxController {
     private final ErrorReportService errorReportService;
     private final LoginService loginService;
     private final RootController rootController;
+    private final AsyncService asyncService;
 
     public void onLogin() {
         log.info("starting login process");
         loginButton.setDisable(true);
-        try {
-            log.info("login complete");
-            loginService.login();
-            rootController.showMenu();
-        } catch (Exception e) {
-            errorReportService.report(e);
-            log.info("login failed");
-            loginButton.setDisable(false);
-        }
+        asyncService.schedule(
+                loginService::login,
+                this::onLoginComplete,
+                this::onLoginFailed);
+    }
+
+    private void onLoginComplete() {
+        log.info("login complete");
+        rootController.showMenu();
+    }
+
+    private void onLoginFailed(Throwable error) {
+        errorReportService.report(error);
+        log.info("login failed");
+        loginButton.setDisable(false);
     }
 }

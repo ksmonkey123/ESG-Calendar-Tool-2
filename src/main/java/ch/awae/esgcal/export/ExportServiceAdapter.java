@@ -13,18 +13,18 @@ public class ExportServiceAdapter implements ExportByYearService, ExportByDateSe
     private final ExportDispatcher dispatcher;
 
     @Override
-    public boolean performExport(ExportByDateType export, LocalDate fromDate, LocalDate toDate) throws ExportException {
+    public void performExport(ExportByDateType export, String file, LocalDate fromDate, LocalDate toDate) throws ExportException {
         try {
-            return dispatcher.performExport(export, fromDate, toDate);
+            dispatcher.performExport(export, file, fromDate, toDate);
         } catch (Exception e) {
             throw new ExportException(e);
         }
     }
 
     @Override
-    public boolean performExport(ExportByYearType export, int year) throws ExportException {
+    public void performExport(ExportByYearType export, String file, int year) throws ExportException {
         try {
-            return dispatcher.performExport(export, year);
+            dispatcher.performExport(export, file, year);
         } catch (Exception e) {
             throw new ExportException(e);
         }

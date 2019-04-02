@@ -1,6 +1,5 @@
 package ch.awae.esgcal.export.impl;
 
-import ch.awae.esgcal.PostConstructBean;
 import ch.awae.esgcal.api.calendar.ApiException;
 import ch.awae.esgcal.api.calendar.Event;
 import ch.awae.esgcal.api.spreadsheet.Sheet;
@@ -12,7 +11,6 @@ import ch.awae.esgcal.fx.modal.SaveLocationService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,19 +20,11 @@ import java.util.*;
 @Log
 @Service
 @RequiredArgsConstructor
-public class GanztagExport implements ExportPipelineSpecification<GanztagExport.Entry>, PostConstructBean {
+public class GanztagExport implements ExportPipelineSpecification<GanztagExport.Entry> {
 
     private final DecoratedEventService eventService;
     private final SaveLocationService saveLocationService;
     private final SpreadsheetService spreadsheetService;
-
-    private String fileSuffix;
-
-    @Override
-    public void postContruct(ApplicationContext context) {
-        fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
-        log.config("fileSuffix = " + fileSuffix);
-    }
 
     @Override
     public Map<ExportCalendar, List<Event>> fetchEvents(LocalDate fromDate, LocalDate toDate) throws ApiException {
@@ -75,15 +65,9 @@ public class GanztagExport implements ExportPipelineSpecification<GanztagExport.
         }
     }
 
-    public boolean export(LocalDate dateFrom, LocalDate dateTo) throws ApiException, SpreadsheetException {
-        Optional<String> saveFile = saveLocationService.prompt("GanztaegigeTermine", fileSuffix);
-        if (!saveFile.isPresent())
-            return false;
-
+    public void export(String file, LocalDate dateFrom, LocalDate dateTo) throws ApiException, SpreadsheetException {
         List<ProcessedDate<Entry>> dates = new ExportPipeline<>(this).execute(dateFrom, dateTo);
-
-        writeSpreadsheet(dates, saveFile.get());
-        return true;
+        writeSpreadsheet(dates, file);
     }
 
     private void writeSpreadsheet(List<ProcessedDate<Entry>> dates, String file) throws SpreadsheetException {

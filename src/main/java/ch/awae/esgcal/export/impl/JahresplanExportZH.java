@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Log
 @Service
@@ -37,7 +36,6 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String>, 
     @Override
     public void postContruct(ApplicationContext context) {
         fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
-        log.config("fileSuffix = " + fileSuffix);
     }
 
     @Override
@@ -115,17 +113,12 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String>, 
     }
 
 
-    public boolean export(int year) throws ApiException, SpreadsheetException {
-        Optional<String> saveFile = saveLocationService.prompt("JahresplanZH", fileSuffix);
-        if (!saveFile.isPresent())
-            return false;
-
+    public void export(String file, int year) throws ApiException, SpreadsheetException {
         LocalDate start = dateService.date(year, 1, 1);
         LocalDate end = dateService.date(year, 12, 31);
         List<ProcessedDate<String>> dates = new ExportPipeline<>(this).execute(start, end);
 
-        writeSpreadsheet(dates, saveFile.get());
-        return true;
+        writeSpreadsheet(dates, file);
     }
 
     private void writeSpreadsheet(List<ProcessedDate<String>> dates, String file) throws SpreadsheetException {

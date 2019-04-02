@@ -4,9 +4,11 @@ import ch.awae.esgcal.PostConstructBean;
 import ch.awae.esgcal.api.calendar.ApiException;
 import ch.awae.esgcal.api.calendar.Calendar;
 import ch.awae.esgcal.api.calendar.CalendarService;
+import ch.awae.esgcal.async.AsyncService;
 import ch.awae.esgcal.fx.FxController;
 import ch.awae.esgcal.fx.modal.ErrorReportService;
 import ch.awae.utils.functional.T2;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -39,11 +41,11 @@ public class PublishingCalendarSelectionController implements FxController, Post
     private final PublishingRootController publishingRootController;
     private final PublishingEventSelectionController publishingEventSelectionController;
     private final ErrorReportService errorReportService;
+    private final AsyncService asyncService;
 
     @Override
     public void postContruct(ApplicationContext context) {
         suffix = context.getEnvironment().getRequiredProperty("calendar.planning-suffix");
-        log.config("calendarSuffix = '" + suffix + "'");
     }
 
     void fetch(LocalDate startDate, LocalDate endDate) throws ApiException {
@@ -52,17 +54,21 @@ public class PublishingCalendarSelectionController implements FxController, Post
         log.info("fetching calendar pairs");
         boolean unpublish = publishingRootController.isUnpublish();
         List<T2<Calendar, Calendar>> pairs = calendarService.getCalendarPairs(suffix);
-        this.calendarPairs.clear();
+        List<ListEntry> list = new ArrayList<>();
         for (T2<Calendar, Calendar> pair : pairs) {
             if (unpublish) {
-                this.calendarPairs.add(new ListEntry(pair._1, pair._2, new SimpleBooleanProperty()));
+                list.add(new ListEntry(pair._1, pair._2, new SimpleBooleanProperty()));
             } else {
-                this.calendarPairs.add(new ListEntry(pair._2, pair._1, new SimpleBooleanProperty()));
+                list.add(new ListEntry(pair._2, pair._1, new SimpleBooleanProperty()));
             }
         }
         log.info("found " + this.calendarPairs.size() + " calendar pairs");
-        calendarList.setItems(this.calendarPairs);
-        calendarList.setCellFactory(CheckBoxListCell.forListView(ListEntry::getSelection));
+        Platform.runLater(() -> {
+            calendarPairs.clear();
+            calendarPairs.addAll(list);
+            calendarList.setItems(this.calendarPairs);
+            calendarList.setCellFactory(CheckBoxListCell.forListView(ListEntry::getSelection));
+        });
     }
 
     public void onBack() {
@@ -73,18 +79,19 @@ public class PublishingCalendarSelectionController implements FxController, Post
     public void onNext() {
         log.info("transitioning to event selection");
         List<T2<Calendar, Calendar>> selected = new ArrayList<>();
-
         for (ListEntry entry : calendarPairs)
             if (entry.selection.get())
                 selected.add(T2.of(entry.from, entry.to));
 
-        try {
-            publishingEventSelectionController.fetch(selected, startDate, endDate);
-            publishingRootController.showEventSelection();
-        } catch (Exception e) {
-            errorReportService.report(e);
-            log.info("transition failed");
-        }
+        asyncService.schedule(
+                () -> publishingEventSelectionController.fetch(selected, startDate, endDate),
+                publishingRootController::showEventSelection,
+                this::onTransitionFailed);
+    }
+
+    private void onTransitionFailed(Throwable e) {
+        errorReportService.report(e);
+        log.info("transition failed");
     }
 
     @AllArgsConstructor

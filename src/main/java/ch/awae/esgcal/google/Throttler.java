@@ -20,7 +20,6 @@ class Throttler implements PostConstructBean {
     @Override
     public void postContruct(ApplicationContext context) {
         this.delay = 1000 / context.getEnvironment().getRequiredProperty("google.api.throttle", int.class);
-        log.config("delay = " + delay);
     }
 
     /**

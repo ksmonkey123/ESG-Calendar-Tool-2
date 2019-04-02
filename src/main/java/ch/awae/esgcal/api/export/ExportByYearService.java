@@ -2,6 +2,6 @@ package ch.awae.esgcal.api.export;
 
 public interface ExportByYearService {
 
-    boolean performExport(ExportByYearType export, int year) throws ExportException;
+    void performExport(ExportByYearType export, String file, int year) throws ExportException;
 
 }

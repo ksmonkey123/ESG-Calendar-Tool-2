@@ -10,7 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Log
@@ -36,10 +37,12 @@ public class Main extends Application {
     }
 
     private void runPostConstruct() {
-        Collection<PostConstructBean> beans = springContext.getBeansOfType(PostConstructBean.class).values();
+        List<PostConstructBean> beans = new ArrayList<>(springContext.getBeansOfType(PostConstructBean.class).values());
         log.info("running postConstruct on " + beans.size() + " beans");
-        for (PostConstructBean bean : beans) {
-            log.info(" - " + bean.getClass().getName());
+        int digits = 1 + (int) Math.floor(Math.log10(beans.size()));
+        for (int i = 0; i < beans.size(); i++) {
+            PostConstructBean bean = beans.get(i);
+            log.info(String.format(" (%" + digits + "d) ", i + 1) + bean.getClass().getName());
             bean.postContruct(springContext);
         }
     }

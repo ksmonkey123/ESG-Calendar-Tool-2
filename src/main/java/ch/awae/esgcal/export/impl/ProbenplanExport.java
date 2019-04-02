@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 @Log
 @Service
@@ -34,7 +37,6 @@ public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanE
     @Override
     public void postContruct(ApplicationContext context) {
         fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
-        log.config("fileSuffix = " + fileSuffix);
     }
 
     @Override
@@ -60,16 +62,9 @@ public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanE
         private final String event;
     }
 
-    public boolean export(LocalDate dateFrom, LocalDate dateTo, ExportCalendar calendar) throws ApiException, SpreadsheetException {
-        Optional<String> saveFile = saveLocationService.prompt("Probenplan" + calendar.getTitle(), fileSuffix);
-        if (!saveFile.isPresent())
-            return false;
-
+    public void export(String file, LocalDate dateFrom, LocalDate dateTo, ExportCalendar calendar) throws ApiException, SpreadsheetException {
         List<ProcessedDate<Entry>> dates = new ExportPipeline<>(this).execute(dateFrom, dateTo);
-
-        writeSpreadsheet(dates, saveFile.get());
-
-        return true;
+        writeSpreadsheet(dates, file);
     }
 
     private void writeSpreadsheet(List<ProcessedDate<Entry>> dates, String file) throws SpreadsheetException {

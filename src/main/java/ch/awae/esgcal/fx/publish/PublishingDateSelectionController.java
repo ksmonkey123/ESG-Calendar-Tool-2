@@ -1,6 +1,7 @@
 package ch.awae.esgcal.fx.publish;
 
 import ch.awae.esgcal.DateService;
+import ch.awae.esgcal.async.AsyncService;
 import ch.awae.esgcal.fx.FxController;
 import ch.awae.esgcal.fx.RootController;
 import ch.awae.esgcal.fx.modal.ErrorReportService;
@@ -24,6 +25,7 @@ public class PublishingDateSelectionController implements FxController {
     private final PublishingRootController publishingRootController;
     private final PublishingCalendarSelectionController calendarSelectionController;
     private final ErrorReportService errorReportService;
+    private final AsyncService asyncService;
 
     @Override
     public void initialize() {
@@ -48,14 +50,15 @@ public class PublishingDateSelectionController implements FxController {
     }
 
     public void onNext() {
-        try {
-            log.info("transitioning to calendar selection");
-            calendarSelectionController.fetch(dateFrom.getValue(), dateTo.getValue());
-            publishingRootController.showCalendarSelection();
-        } catch (Exception e) {
-            errorReportService.report(e);
-            log.info("transition failed");
-        }
+        log.info("transitioning to calendar selection");
+        asyncService.schedule(
+                () -> calendarSelectionController.fetch(dateFrom.getValue(), dateTo.getValue()),
+                publishingRootController::showCalendarSelection,
+                this::onTransitionFailed);
     }
 
+    private void onTransitionFailed(Throwable e) {
+        errorReportService.report(e);
+        log.info("transition failed");
+    }
 }

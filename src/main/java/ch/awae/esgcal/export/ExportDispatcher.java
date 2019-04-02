@@ -18,23 +18,27 @@ class ExportDispatcher {
     private final ProbenplanExport probenplanExport;
     private final JahresplanExportZH jahresplanExportZH;
 
-    boolean performExport(ExportByDateType export, LocalDate fromDate, LocalDate toDate) throws Exception {
+    void performExport(ExportByDateType export, String file, LocalDate fromDate, LocalDate toDate) throws Exception {
         switch (export) {
             case GANZTAG:
-                return ganztagExport.export(fromDate, toDate);
+                ganztagExport.export(file, fromDate, toDate);
+                return;
             case BERN:
-                return probenplanExport.export(fromDate, toDate, ExportCalendar.BERN);
+                probenplanExport.export(file, fromDate, toDate, ExportCalendar.BERN);
+                return;
             case ZUERICH:
-                return probenplanExport.export(fromDate, toDate, ExportCalendar.ZUERICH);
+                probenplanExport.export(file, fromDate, toDate, ExportCalendar.ZUERICH);
+                return;
             default:
                 throw new UnsupportedOperationException();
         }
     }
 
-    boolean performExport(ExportByYearType export, int year) throws Exception {
+    void performExport(ExportByYearType export, String file, int year) throws Exception {
         switch (export) {
             case ZUERICH:
-                return jahresplanExportZH.export(year);
+                jahresplanExportZH.export(file, year);
+                return;
             default:
                 throw new UnsupportedOperationException();
         }

@@ -1,13 +1,16 @@
 package ch.awae.esgcal.fx.publish;
 
+import ch.awae.esgcal.api.calendar.ApiException;
 import ch.awae.esgcal.api.calendar.Calendar;
 import ch.awae.esgcal.api.calendar.Event;
 import ch.awae.esgcal.api.calendar.EventService;
+import ch.awae.esgcal.async.AsyncService;
 import ch.awae.esgcal.fx.FxController;
 import ch.awae.esgcal.fx.RootController;
 import ch.awae.esgcal.fx.modal.ErrorReportService;
 import ch.awae.esgcal.fx.modal.PopupService;
 import ch.awae.utils.functional.T2;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -38,6 +41,7 @@ public class PublishingEventSelectionController implements FxController {
     private final RootController rootController;
     private final EventService eventService;
     private final PopupService popupService;
+    private final AsyncService asyncService;
 
     public TabPane tabs;
     public BorderPane pane;
@@ -47,7 +51,7 @@ public class PublishingEventSelectionController implements FxController {
     void fetch(List<T2<Calendar, Calendar>> calendarPairs, LocalDate startDate, LocalDate endDate) throws Exception {
         log.info("fetching events");
         boolean unpublish = publishingRootController.isUnpublish();
-        tabs.getTabs().clear();
+        Platform.runLater(() -> tabs.getTabs().clear());
         listEntries = new ArrayList<>();
 
         for (T2<Calendar, Calendar> pair : calendarPairs) {
@@ -60,25 +64,27 @@ public class PublishingEventSelectionController implements FxController {
         listEntries.add(T2.of(pair, list));
         List<Event> events = eventService.listEvents(pair._1, startDate, endDate);
 
-        Tab tab = new Tab();
-        tab.setClosable(false);
-        tab.setText(pair._1.getName());
-        ListView<ListEntry> listView = new ListView<>();
-        ObservableList<ListEntry> entries = FXCollections.observableArrayList();
+        Platform.runLater(() -> {
+            Tab tab = new Tab();
+            tab.setClosable(false);
+            tab.setText(pair._1.getName());
+            ListView<ListEntry> listView = new ListView<>();
+            ObservableList<ListEntry> entries = FXCollections.observableArrayList();
 
-        for (Event event : events) {
-            ListEntry e = new ListEntry(pair._1, pair._2, event, new SimpleBooleanProperty());
-            if (!unpublish)
-                e = e.selected();
-            entries.add(e);
-            list.add(e);
-        }
+            for (Event event : events) {
+                ListEntry e = new ListEntry(pair._1, pair._2, event, new SimpleBooleanProperty());
+                if (!unpublish)
+                    e = e.selected();
+                entries.add(e);
+                list.add(e);
+            }
 
-        listView.setItems(entries);
-        listView.setCellFactory(CheckBoxListCell.forListView(ListEntry::getSelection));
-        tab.setContent(listView);
-        tabs.getTabs().add(tab);
-        log.info("added tab for calendar " + pair._1.getName() + " (" + events.size() + " events)");
+            listView.setItems(entries);
+            listView.setCellFactory(CheckBoxListCell.forListView(ListEntry::getSelection));
+            tab.setContent(listView);
+            tabs.getTabs().add(tab);
+            log.info("added tab for calendar " + pair._1.getName() + " (" + events.size() + " events)");
+        });
     }
 
     private final static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yy (HH:mm) ");
@@ -114,21 +120,32 @@ public class PublishingEventSelectionController implements FxController {
             log.info("performing publishing");
         }
         pane.setDisable(true);
-        try {
-            for (T2<T2<Calendar, Calendar>, List<ListEntry>> calendar : listEntries) {
-                List<Event> events = new ArrayList<>();
-                for (ListEntry entry : calendar._2)
-                    if (entry.getSelection().get())
-                        events.add(entry.getEvent());
-                eventService.moveEvents(events, calendar._1._1, calendar._1._2);
-            }
-            popupService.info("Ereignisse erfolgreich verschoben.");
-            log.info("(un)publishing done");
-            rootController.showMenu();
-        } catch (Exception e) {
-            errorReportService.report(e);
-            log.info("(un)publishing failed");
+        asyncService.schedule(
+                this::doPublish,
+                this::onPublishingComplete,
+                this::onPublishingFailed);
+    }
+
+    private void doPublish() throws ApiException {
+        for (T2<T2<Calendar, Calendar>, List<ListEntry>> calendar : listEntries) {
+            List<Event> events = new ArrayList<>();
+            for (ListEntry entry : calendar._2)
+                if (entry.getSelection().get())
+                    events.add(entry.getEvent());
+            eventService.moveEvents(events, calendar._1._1, calendar._1._2);
         }
+    }
+
+    private void onPublishingComplete() {
+        popupService.info("Ereignisse erfolgreich verschoben.");
+        log.info("(un)publishing done");
+        rootController.showMenu();
+        pane.setDisable(false);
+    }
+
+    private void onPublishingFailed(Throwable e) {
+        log.info("(un)publishing failed");
+        errorReportService.report(e);
         pane.setDisable(false);
     }
 
