@@ -1,5 +1,6 @@
 package ch.awae.esgcal.core;
 
+import ch.awae.esgcal.DateService;
 import org.junit.Before;
 import org.junit.Test;
 

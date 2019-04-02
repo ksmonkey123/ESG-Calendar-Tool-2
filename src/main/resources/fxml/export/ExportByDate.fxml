@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ch.awae.esgcal.core.fx.export.ExportByDateController"
-fx:id="pane">
+            fx:controller="ch.awae.esgcal.fx.export.ExportByDateController"
+            fx:id="pane">
 
     <padding>
         <Insets bottom="20" left="20" right="20"/>

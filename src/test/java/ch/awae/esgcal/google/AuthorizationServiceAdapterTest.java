@@ -1,6 +1,6 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.core.api.ApiException;
+import ch.awae.esgcal.api.calendar.ApiException;
 import org.junit.Before;
 import org.junit.Test;
 

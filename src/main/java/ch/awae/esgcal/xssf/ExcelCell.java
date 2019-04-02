@@ -1,6 +1,6 @@
 package ch.awae.esgcal.xssf;
 
-import ch.awae.esgcal.core.export.spreadsheet.Cell;
+import ch.awae.esgcal.api.spreadsheet.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 
 class ExcelCell implements Cell {

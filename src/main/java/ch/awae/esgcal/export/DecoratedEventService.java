@@ -1,9 +1,9 @@
 package ch.awae.esgcal.export;
 
-import ch.awae.esgcal.core.api.ApiException;
-import ch.awae.esgcal.core.api.Calendar;
-import ch.awae.esgcal.core.api.Event;
-import ch.awae.esgcal.core.api.EventService;
+import ch.awae.esgcal.api.calendar.ApiException;
+import ch.awae.esgcal.api.calendar.Calendar;
+import ch.awae.esgcal.api.calendar.Event;
+import ch.awae.esgcal.api.calendar.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package ch.awae.esgcal.export;
 
-import ch.awae.esgcal.core.api.ApiException;
-import ch.awae.esgcal.core.api.Event;
+import ch.awae.esgcal.api.calendar.ApiException;
+import ch.awae.esgcal.api.calendar.Event;
 import ch.awae.utils.functional.T2;
 import lombok.RequiredArgsConstructor;
 

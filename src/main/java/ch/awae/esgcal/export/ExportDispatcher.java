@@ -1,7 +1,7 @@
 package ch.awae.esgcal.export;
 
-import ch.awae.esgcal.core.export.ExportByDateType;
-import ch.awae.esgcal.core.export.ExportByYearType;
+import ch.awae.esgcal.api.export.ExportByDateType;
+import ch.awae.esgcal.api.export.ExportByYearType;
 import ch.awae.esgcal.export.impl.GanztagExport;
 import ch.awae.esgcal.export.impl.JahresplanExportZH;
 import ch.awae.esgcal.export.impl.ProbenplanExport;

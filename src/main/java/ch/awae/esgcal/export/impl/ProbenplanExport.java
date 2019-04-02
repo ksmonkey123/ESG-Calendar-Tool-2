@@ -1,14 +1,14 @@
 package ch.awae.esgcal.export.impl;
 
 import ch.awae.esgcal.PostConstructBean;
-import ch.awae.esgcal.core.api.ApiException;
-import ch.awae.esgcal.core.api.Event;
-import ch.awae.esgcal.core.export.spreadsheet.Sheet;
-import ch.awae.esgcal.core.export.spreadsheet.SpreadsheetException;
-import ch.awae.esgcal.core.export.spreadsheet.SpreadsheetService;
-import ch.awae.esgcal.core.export.spreadsheet.Workbook;
-import ch.awae.esgcal.core.fx.modal.SaveLocationService;
+import ch.awae.esgcal.api.calendar.ApiException;
+import ch.awae.esgcal.api.calendar.Event;
+import ch.awae.esgcal.api.spreadsheet.Sheet;
+import ch.awae.esgcal.api.spreadsheet.SpreadsheetException;
+import ch.awae.esgcal.api.spreadsheet.SpreadsheetService;
+import ch.awae.esgcal.api.spreadsheet.Workbook;
 import ch.awae.esgcal.export.*;
+import ch.awae.esgcal.fx.modal.SaveLocationService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

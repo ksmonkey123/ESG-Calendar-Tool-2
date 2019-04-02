@@ -1,7 +1,7 @@
 package ch.awae.esgcal.xssf;
 
-import ch.awae.esgcal.core.export.spreadsheet.Cell;
-import ch.awae.esgcal.core.export.spreadsheet.Sheet;
+import ch.awae.esgcal.api.spreadsheet.Cell;
+import ch.awae.esgcal.api.spreadsheet.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;

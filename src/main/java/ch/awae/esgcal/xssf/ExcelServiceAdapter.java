@@ -1,8 +1,8 @@
 package ch.awae.esgcal.xssf;
 
-import ch.awae.esgcal.core.export.spreadsheet.SpreadsheetException;
-import ch.awae.esgcal.core.export.spreadsheet.SpreadsheetService;
-import ch.awae.esgcal.core.export.spreadsheet.Workbook;
+import ch.awae.esgcal.api.spreadsheet.SpreadsheetException;
+import ch.awae.esgcal.api.spreadsheet.SpreadsheetService;
+import ch.awae.esgcal.api.spreadsheet.Workbook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package ch.awae.esgcal.xssf;
 
-import ch.awae.esgcal.core.export.spreadsheet.Sheet;
-import ch.awae.esgcal.core.export.spreadsheet.Workbook;
+import ch.awae.esgcal.api.spreadsheet.Sheet;
+import ch.awae.esgcal.api.spreadsheet.Workbook;
 import lombok.Getter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

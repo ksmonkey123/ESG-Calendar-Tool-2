@@ -1,7 +1,7 @@
 package ch.awae.esgcal.google;
 
-import ch.awae.esgcal.core.api.ApiException;
-import ch.awae.esgcal.core.api.LoginService;
+import ch.awae.esgcal.api.calendar.ApiException;
+import ch.awae.esgcal.api.calendar.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

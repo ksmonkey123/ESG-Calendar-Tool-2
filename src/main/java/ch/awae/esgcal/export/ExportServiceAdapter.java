@@ -1,6 +1,6 @@
 package ch.awae.esgcal.export;
 
-import ch.awae.esgcal.core.export.*;
+import ch.awae.esgcal.api.export.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
