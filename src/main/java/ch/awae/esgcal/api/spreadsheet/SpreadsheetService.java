@@ -6,4 +6,6 @@ public interface SpreadsheetService {
 
     void saveWorkbook(Workbook workbook, String file) throws SpreadsheetException;
 
+    Workbook fromResource(String file) throws SpreadsheetException;
+
 }

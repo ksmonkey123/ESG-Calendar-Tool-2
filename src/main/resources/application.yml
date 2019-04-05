@@ -31,3 +31,4 @@ calendar:
 export:
   format: ".xlsx"
   formatESG: ".xlsm"
+  fileESG: "JP.xlsm"

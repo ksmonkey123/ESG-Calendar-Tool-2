@@ -41,10 +41,12 @@ public class ExportByYearController implements FxController, PostConstructBean {
     private ExportByYearType exportType;
 
     private String fileSuffix;
+    private String fileSuffixESG;
 
     @Override
     public void postContruct(ApplicationContext context) {
         fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
+        fileSuffixESG = context.getEnvironment().getRequiredProperty("export.formatESG", String.class);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class ExportByYearController implements FxController, PostConstructBean {
     public void onExecute() {
         log.info("executing export");
         pane.setDisable(true);
-        Optional<String> saveFile = saveLocationService.prompt(exportType.getText(), fileSuffix);
+        Optional<String> saveFile = saveLocationService.prompt(exportType.getText(), exportType == ExportByYearType.ESG ? fileSuffixESG : fileSuffix);
         if (!saveFile.isPresent()) {
             pane.setDisable(false);
             return;

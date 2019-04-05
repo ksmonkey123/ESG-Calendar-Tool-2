@@ -2,10 +2,7 @@ package ch.awae.esgcal.export;
 
 import ch.awae.esgcal.api.export.ExportByDateType;
 import ch.awae.esgcal.api.export.ExportByYearType;
-import ch.awae.esgcal.export.impl.GanztagExport;
-import ch.awae.esgcal.export.impl.JahresplanExportBE;
-import ch.awae.esgcal.export.impl.JahresplanExportZH;
-import ch.awae.esgcal.export.impl.ProbenplanExport;
+import ch.awae.esgcal.export.impl.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +16,7 @@ class ExportDispatcher {
     private final ProbenplanExport probenplanExport;
     private final JahresplanExportZH jahresplanExportZH;
     private final JahresplanExportBE jahresplanExportBE;
+    private final JahresplanExportESG jahresplanExportESG;
 
     void performExport(ExportByDateType export, String file, LocalDate fromDate, LocalDate toDate) throws Exception {
         switch (export) {
@@ -43,6 +41,9 @@ class ExportDispatcher {
                 return;
             case ZUERICH:
                 jahresplanExportZH.export(file, year);
+                return;
+            case ESG:
+                jahresplanExportESG.export(file, year);
                 return;
             default:
                 throw new UnsupportedOperationException();

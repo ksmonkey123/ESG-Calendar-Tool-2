@@ -4,4 +4,5 @@ public interface Workbook {
 
     Sheet getSheet(String name);
 
+    void evaluateFormulas();
 }
