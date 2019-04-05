@@ -22,7 +22,7 @@ import java.util.Map;
 @Log
 @Service
 @RequiredArgsConstructor
-public class JahresplanExportZH implements ExportPipelineSpecification<String> {
+public class JahresplanExportBE implements ExportPipelineSpecification<String> {
 
     private final DecoratedEventService eventService;
     private final SaveLocationService saveLocationService;
@@ -31,7 +31,7 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String> {
 
     @Override
     public Map<ExportCalendar, List<Event>> fetchEvents(LocalDate fromDate, LocalDate toDate) throws ApiException {
-        return eventService.listEvents(fromDate, toDate, ExportCalendar.ZUERICH);
+        return eventService.listEvents(fromDate, toDate, ExportCalendar.BERN);
     }
 
     @Override
@@ -53,15 +53,19 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String> {
             case "Einsingen":
                 return null;
             case "Offenes Singen":
-                return "off. Singen ZH";
+                return "off. Singen";
             case "Probe und Vesper":
-                return "Vesper + Probe";
-            case "Probe mit Vertretung":
-                return "Probe";
-            case "Jahresversammlung Zürich":
-                return "Jahresversammlung ZKP";
+            case "Probe und Vesper Vertretung":
+            case "Probe und Kantatenvesper":
+                return "na";
+            case "Abendprobe":
+                return "ab";
+            case "Jahresversammlung Bern":
+                return "JV BE";
+            case "Jahresversammlung ESG":
+                return "JV ESG";
             case "Probentag in Bern mit Vesper":
-                return "Probentag in BE + Vesper";
+                return "Probentag in BE + na";
             case "Probentag in Bern":
                 return "Probentag in BE";
             case "Probentag in Zürich mit Gottesdienst":
@@ -71,7 +75,7 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String> {
             case "Generalprobe Zürich":
                 return "Generalprobe in ZH";
             case "Generalprobe Zürich mit Vesper":
-                return "Generalprobe in ZH";
+                return "zk V + Generalprobe in ZH";
             case "Generalprobe Bern":
                 return "Generalprobe in BE";
             case "Passionsmusik Zürich":
@@ -90,6 +94,12 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String> {
                 return "Herbstmusik in ZH";
             case "Herbstmusik Bern":
                 return "Herbstmusik in BE";
+            case "Gottesdienst":
+                return "Gottesdienst BE";
+            case "Probe und Vesper Junge Kantorei ad hoc":
+                return "na Junge";
+            case "Probe und Vespser Chor 50+":
+                return "50+";
             default:
                 return title;
         }
@@ -98,11 +108,10 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String> {
     @Override
     public List<String> mergeEvents(LocalDate localDate, List<String> events) {
         String merged = events.stream().reduce((a, b) -> a + " / " + b).orElse(null);
-        if ("Vesper / Probe".equals(merged))
-            merged = "Vesper + Probe";
+        if ("na / ab".equals(merged))
+            merged = "na + ab";
         return Collections.singletonList(merged);
     }
-
 
     public void export(String file, int year) throws ApiException, SpreadsheetException {
         LocalDate start = dateService.date(year, 1, 1);
@@ -114,7 +123,7 @@ public class JahresplanExportZH implements ExportPipelineSpecification<String> {
 
     private void writeSpreadsheet(List<ProcessedDate<String>> dates, String file) throws SpreadsheetException {
         Workbook workbook = spreadsheetService.emptyWorkbook();
-        Sheet sheet = workbook.getSheet("Jahresplan ZH");
+        Sheet sheet = workbook.getSheet("Jahresplan BE");
 
         DateTimeFormatter dow = DateTimeFormatter.ofPattern("E");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yy");

@@ -1,6 +1,5 @@
 package ch.awae.esgcal.export.impl;
 
-import ch.awae.esgcal.PostConstructBean;
 import ch.awae.esgcal.api.calendar.ApiException;
 import ch.awae.esgcal.api.calendar.Event;
 import ch.awae.esgcal.api.spreadsheet.Sheet;
@@ -12,7 +11,6 @@ import ch.awae.esgcal.fx.modal.SaveLocationService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,18 +24,11 @@ import java.util.Map;
 @Log
 @Service
 @RequiredArgsConstructor
-public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanExport.Entry>, PostConstructBean {
+public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanExport.Entry> {
 
     private final DecoratedEventService eventService;
     private final SaveLocationService saveLocationService;
     private final SpreadsheetService spreadsheetService;
-
-    private String fileSuffix;
-
-    @Override
-    public void postContruct(ApplicationContext context) {
-        fileSuffix = context.getEnvironment().getRequiredProperty("export.format", String.class);
-    }
 
     @Override
     public Map<ExportCalendar, List<Event>> fetchEvents(LocalDate fromDate, LocalDate toDate) throws ApiException {
