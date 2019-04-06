@@ -23,6 +23,7 @@ google:
     enable: true
   api:
     throttle: 5
+    cache-duration: 10000
 
 calendar:
   planning-suffix: " - Planung"
