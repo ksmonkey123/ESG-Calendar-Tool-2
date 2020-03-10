@@ -7,11 +7,9 @@ import ch.awae.esgcal.api.spreadsheet.SpreadsheetException;
 import ch.awae.esgcal.api.spreadsheet.SpreadsheetService;
 import ch.awae.esgcal.api.spreadsheet.Workbook;
 import ch.awae.esgcal.export.*;
-import ch.awae.esgcal.fx.modal.SaveLocationService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,17 +20,16 @@ import java.util.List;
 import java.util.Map;
 
 @Log
-@Service
 @RequiredArgsConstructor
 public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanExport.Entry> {
 
     private final DecoratedEventService eventService;
-    private final SaveLocationService saveLocationService;
     private final SpreadsheetService spreadsheetService;
+    private final ExportCalendar calendar;
 
     @Override
     public Map<ExportCalendar, List<Event>> fetchEvents(LocalDate fromDate, LocalDate toDate) throws ApiException {
-        return eventService.listEvents(fromDate, toDate, ExportCalendar.BERN);
+        return eventService.listEvents(fromDate, toDate, calendar);
     }
 
     @Override
@@ -53,7 +50,7 @@ public class ProbenplanExport implements ExportPipelineSpecification<ProbenplanE
         private final String event;
     }
 
-    public void export(String file, LocalDate dateFrom, LocalDate dateTo, ExportCalendar calendar) throws ApiException, SpreadsheetException {
+    public void export(String file, LocalDate dateFrom, LocalDate dateTo) throws ApiException, SpreadsheetException {
         List<ProcessedDate<Entry>> dates = new ExportPipeline<>(this).execute(dateFrom, dateTo);
         writeSpreadsheet(dates, file);
     }
